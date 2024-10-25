@@ -1,0 +1,22 @@
+<main class="py-4 h-auto">
+      <div class="container-fluid">
+            <app-inner-header />
+            <div class="row mt-5">
+                  <div class="col-lg-3 mb-4">
+                        <app-sidebar />
+                  </div>
+                  <div class="col-lg-9  mb-4">
+                        <div class="ct_right_content">
+                              <h4 class="ct_fs_20 text-white">Tag</h4>
+                              <div class="ct_all_tags">
+                                    <ul>
+                                          @for (item of data; track $index) {
+                                          <li><a routerLink="" class="text-white">{{item.tag}}</a></li>
+                                          }
+                                    </ul>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</main>
