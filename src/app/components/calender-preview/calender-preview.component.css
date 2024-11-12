@@ -1,0 +1,12 @@
+.bg-img {
+      height: 100%;
+      background-repeat: round;
+}
+
+td {
+      padding: 0 !important;
+}
+
+.ct_prev_year {
+      cursor: pointer;
+}

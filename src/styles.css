@@ -96,3 +96,12 @@
 ::-webkit-scrollbar-thumb:hover {
       background: #555;
 }
+
+.ct_input::placeholder {
+      opacity: 0.5;
+}
+
+.ct_red_star {
+      color: #D92D20;
+      ;
+}

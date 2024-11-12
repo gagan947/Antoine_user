@@ -1,3 +1,4 @@
+<app-header />
 <main class="py-4 h-auto">
       <div class="container-fluid">
             <app-inner-header />
@@ -10,42 +11,56 @@
                               <ul class="ct_breadcrumb_menu mb-4 ps-0">
                                     <li>
                                           <a routerLink="/archives">
-                                                <h4 class="text-white  ct_fs_20 mb-0">Home</h4>
+                                                <h4 class="text-white  ct_fs_20 mb-0"><a class="text-white"
+                                                            routerLink="/archives">Home</a></h4>
                                           </a>
                                     </li>
+                                    <li *ngIf="subCategory?.subcategory_name">
+                                          /
+                                    </li>
+                                    <li *ngIf="subCategory?.subcategory_name">
+                                          <a class="text-white" routerLink="/sub-categories"
+                                                [queryParams]="{id : category?.id}">{{category?.category_name
+                                                }}</a>
+                                    </li>
                                     <li>
                                           /
                                     </li>
                                     <li>
-                                          {{category.category_name}}
-                                    </li>
-                                    <li>
-                                          /
-                                    </li>
-                                    <li>
-                                          {{subCategory.subcategory_name}}
+                                          {{subCategory?.subcategory_name ? subCategory?.subcategory_name :
+                                          tag?.tag_name}}
                                     </li>
                               </ul>
                               <div class="row">
-                                    @for (item of data; track $index) {
-                                    <div class="col-lg-4 col-md-6 mb-5">
-                                          <div class="ct_album_card">
-                                                <a href="studio-album.html">
-                                                      <figure>
-                                                            <div class="ct_album_img">
-                                                                  <img [src]="item.image" alt="">
-                                                            </div>
-                                                            <figcaption>
-                                                                  <p>{{item.image_name}}, {{item.year}}</p>
-                                                            </figcaption>
-                                                      </figure>
-                                                </a>
+                                    <ng-container *ngIf="data;else default">
+                                          @for (item of data; track $index) {
+                                          <div class="col-lg-4 col-md-6 mb-5">
+                                                <div class="ct_album_card">
+                                                      <a routerLink="/studio-album" [queryParams]="{id : item?.id}">
+                                                            <figure>
+                                                                  <div class="ct_album_img">
+                                                                        <img [src]="item?.image" alt="">
+                                                                  </div>
+                                                                  <figcaption>
+                                                                        <p>{{item?.image_name}}</p>
+                                                                  </figcaption>
+                                                            </figure>
+                                                      </a>
+                                                </div>
                                           </div>
-                                    </div>
-                                    }
+                                          }
+                                    </ng-container>
+                                    <ng-template #default>
+                                          <h2 class="text-white mt-5 no_data">NO IMAGES FOUND !</h2>
+                                    </ng-template>
                               </div>
                         </div>
                   </div>
             </div>
       </div>
 </main>
+<app-footer />
+
+<div *ngIf="loading" class="ct_loader_main">
+      <div class="loader"></div>
+</div>

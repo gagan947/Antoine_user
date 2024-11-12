@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-inner-header',
@@ -7,9 +8,18 @@ import { Router } from '@angular/router';
   styleUrl: './inner-header.component.css'
 })
 export class InnerHeaderComponent {
+  searchQuery: string = '';
+  userData: any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private service: SharedService) {
+    const userData: any = localStorage.getItem('userData')
+    this.userData = JSON.parse(userData)
 
+  }
+
+  onSearch() {
+    this.service.updateSearchQuery(this.searchQuery);
+    this.router.navigate(['/search-filters'])
   }
 
   logOut() {

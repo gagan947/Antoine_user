@@ -1,138 +1,36 @@
+<app-header />
 <main class="py-4 h-auto">
-      <div class="container-fluid">
+      <div class="container">
+            <h4 class="ct_fs_24 mb-3 ct_fw_600 text-white">NEWS</h4>
             <div class="row">
-                  <div class="col-md-12 demo-gallery">
-                        <div class="ct_search_messanory_grid" id="lightgallery">
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame8.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame8.png" alt="">
+                  <div class="col-lg-8 mb-4">
+                        @for (item of data; track $index) {
+                        <div class="ct_news_card_12">
+                              <div class="ct_news_img">
+                                    <a routerLink="/news-detail" [queryParams]="{news_id : item?.id}">
+                                          <img [src]="item.image_url" alt="">
+                                    </a>
                               </div>
-                              <div class="ct_search_img tall" data-src="assets/img/search_img/Photo_Frame2.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame2.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame3.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame3.png" alt="">
-                              </div>
-                              <div class="ct_search_img tall" data-src="assets/img/search_img/Photo_Frame4.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame4.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame5.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame5.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame6.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame6.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame7.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame7.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame8.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame8.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame9.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame9.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame10.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame10.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame11.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame11.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame12.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame12.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame13.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame13.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame14.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame14.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame15.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame15.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame16.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame16.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame17.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame17.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame18.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame18.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame19.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame19.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame20.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame20.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame21.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame21.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame22.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame22.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame23.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame23.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame24.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame24.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame25.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame25.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame26.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame26.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame27.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame27.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame28.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame28.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame29.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame29.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame30.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame30.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame31.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame31.png" alt="">
-                              </div>
-                              <div class="ct_search_img" data-src="assets/img/search_img/Photo_Frame32.png"
-                                    data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-                                    <img src="assets/img/search_img/Photo_Frame32.png" alt="">
+                              <div class="ct_news_title">
+                                    <a routerLink="/news-detail" [queryParams]="{news_id : item?.id}">
+                                          <h4 class="ct_fs_24 ct_fw_600">{{item.title}}</h4>
+
+                                    </a>
+                                    <p class="text-white news_desc" [innerHTML]="item.description"></p>
+                                    <div>
+                                          <p class="mb-0 text-white"><i class="fa-solid fa-calendar-days me-2"></i>
+                                                {{item.news_post_date}}</p>
+
+                                    </div>
+
                               </div>
                         </div>
+                        }
+                  </div>
+                  <div class="col-lg-4 mb-4">
+                        <app-news-recent-post />
                   </div>
             </div>
       </div>
 </main>
+<app-footer />

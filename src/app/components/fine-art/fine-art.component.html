@@ -1,65 +1,38 @@
+<app-header />
 <main class="py-4 h-auto">
       <div class="ct_filter_main_gallery">
             <div class="ct_tab_button-group">
-                  <button class="ct_tab_btn filter-button" data-filter="all">All</button>
-                  <button class="ct_tab_btn  filter-button" data-filter="face-a-faces">DKR/TNR
-
+                  <button class="ct_tab_btn filter-button" [ngClass]="{'active' : !selectedId}"
+                        (click)="filterImage(null)">
+                        All
                   </button>
-                  <button class="ct_tab_btn  filter-button" data-filter="debris">DFW17
-
+                  @for (item of subCategories; track $index) {
+                  <button class="ct_tab_btn filter-button" [ngClass]="{'active' : selectedId == item.id}"
+                        (click)="filterImage(item.id)">
+                        {{item.subcategory_name}}
                   </button>
-                  <button class="ct_tab_btn  filter-button" data-filter="waa-dakar">CHRONICLE OF A REVOLT
-                  </button>
+                  }
             </div>
             <div>
-                  <div class="ct_search_messanory_grid ct_home_page_messanory_grid_23">
-                        <a href="fine_art_full_view_detail.html" class="filter waa-dakar">
-                              <img src="assets/img/img_1.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter waa-dakar">
-                              <img src="assets/img/img_2.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter WAA-DAKAR">
-                              <img src="assets/img/img_3.jpg" alt="">
-                        </a>
+                  <div>
+                        <ng-container *ngIf="data.length>0 ;else default">
+                              <div class="ct_search_messanory_grid ct_home_page_messanory_grid_23">
+                                    @for (item of data; track $index) {
+                                    <a class="">
+                                          <img [src]="item.image_url" alt="">
+                                    </a>
+                                    }
 
-
-                        <a href="fine_art_full_view_detail.html" class="filter debris">
-                              <img src="assets/img/img_4.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter debris">
-                              <img src="assets/img/img_5.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter debris">
-                              <img src="assets/img/img_25.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter debris">
-                              <img src="assets/img/img_26.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter debris">
-                              <img src="assets/img/img_27.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter debris">
-                              <img src="assets/img/img_28.jpg" alt="">
-                        </a>
-
-
-                        <a href="fine_art_full_view_detail.html" class="filter face-a-faces">
-                              <img src="assets/img/img_6.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter face-a-faces">
-                              <img src="assets/img/img_7.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter face-a-faces">
-                              <img src="assets/img/img_8.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter face-a-faces">
-                              <img src="assets/img/img_27.jpg" alt="">
-                        </a>
-                        <a href="fine_art_full_view_detail.html" class="filter face-a-faces">
-                              <img src="assets/img/img_28.jpg" alt="">
-                        </a>
+                              </div>
+                        </ng-container>
                   </div>
+                  <ng-template #default>
+                        <h2 class="text-white text-center mt-5 no_data">NO IMAGES FOUND !</h2>
+                  </ng-template>
             </div>
       </div>
 </main>
+<app-footer />
+<!-- <div *ngIf="loading" class="ct_loader_main">
+      <div class="loader"></div>
+</div> -->

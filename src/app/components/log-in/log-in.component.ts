@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class LogInComponent {
   logInForm: FormGroup
   showPassword: boolean = false
-
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,8 +28,10 @@ export class LogInComponent {
 
 
   onSubmit(form: any) {
+    this.loading = true
     form.markAllAsTouched()
     if (form.invalid) {
+      this.loading = false
       return
     }
 
@@ -37,15 +39,24 @@ export class LogInComponent {
     let formData = new URLSearchParams()
     formData.set('email', form.value.email)
     formData.set('password', form.value.password)
-    this.service.post(apiUrl, formData.toString()).subscribe(res => {
-      if (res.success) {
-        this.toastr.success(res.message)
-        this.service.setToken(res.login_token)
-        this.router.navigate(['/archives'])
-      } else {
-        this.toastr.error(res.message)
+    this.service.post(apiUrl, formData.toString()).subscribe({
+      next: (res) => {
+        if (res.success && res.userData.role == '2' || res.success && res.userData.role == '3') {
+          this.toastr.success(res.message)
+          this.service.setToken(res.login_token)
+          localStorage.setItem('userData', JSON.stringify(res.userData))
+          this.router.navigate(['/archives'])
+          this.loading = false
+        } else {
+          this.toastr.error('Invalid Credential')
+          this.loading = false
+        }
+      },
+      error: (error) => {
+        this.loading = false;
+        this.toastr.error(error.message)
       }
-    })
+    });
   }
 
   getErrorMessage(field: string) {

@@ -21,11 +21,19 @@ export class AppComponent {
   }
 
   loadExternalScript() {
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'assets/js/swiper_slider.js';
-    scriptElement.onload = () => {
-      // console.log('External script loaded');
-    };
-    document.body.appendChild(scriptElement);
+    const scriptUrls = [
+      'assets/js/swiper_slider.js',
+      'assets/js/filter_gallery.js',
+      'assets/js/main.js'
+    ];
+
+    scriptUrls.forEach((url) => {
+      const scriptElement = document.createElement('script');
+      scriptElement.src = url;
+      scriptElement.onload = () => {
+        console.log(`External script ${url} loaded`);
+      };
+      document.body.appendChild(scriptElement);
+    });
   }
 }

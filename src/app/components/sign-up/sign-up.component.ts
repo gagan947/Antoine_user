@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { passwordMatchValidator, strongPasswordValidator } from '../../shared/validators';
+import { NoWhitespaceDirective, passwordMatchValidator, strongPasswordValidator } from '../../shared/validators';
 import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input-gg';
 
 
@@ -19,6 +19,7 @@ export class SignUpComponent {
   SearchCountryField = SearchCountryField
   CountryISO = CountryISO
   preferredCountries: CountryISO[] = [CountryISO.India]
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -27,12 +28,12 @@ export class SignUpComponent {
     private router: Router
   ) {
     this.signUpForm = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, NoWhitespaceDirective.validate]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
+      role: [''],
       password: ['', [Validators.required, Validators.minLength(8), strongPasswordValidator]],
-      confirm_password: ['', [Validators.required]]
-    }, { validator: passwordMatchValidator() });
+    });
   }
 
 
@@ -42,21 +43,39 @@ export class SignUpComponent {
       return
     }
 
+    const permissions: any = [
+      { CA: false },
+      { HA: false },
+      { DA: false },
+      { CL: false },
+      { HIP: false }
+    ];
+
     let apiUrl = `user/singup`
     let formData = new URLSearchParams()
     formData.set('name', form.value.name)
     formData.set('email', form.value.email)
     formData.set('password', form.value.password)
-    formData.set('confirm_password', form.value.confirm_password)
-    formData.set('phone', form.value.phone)
-    this.service.post(apiUrl, formData.toString()).subscribe(res => {
-      if (res.success) {
-        this.toastr.success(res.message)
-        this.router.navigate(['/'])
-      } else {
-        this.toastr.error(res.message)
+    formData.set('phone', form.value.phone.number)
+    formData.set('role', '3')
+    formData.set('verify_status', '0')
+    formData.set('permission', JSON.stringify(permissions))
+    this.service.post(apiUrl, formData.toString()).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.toastr.success("You have successfully signed up. Please wait for admin approval to access your account.")
+          this.router.navigate(['/log-in'])
+          this.loading = false
+        } else {
+          this.toastr.error('Invalid Credential')
+          this.loading = false
+        }
+      },
+      error: (error) => {
+        this.loading = false;
+        this.toastr.error(error.message)
       }
-    })
+    });
   }
 
   getErrorMessage(field: string) {

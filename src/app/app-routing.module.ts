@@ -21,10 +21,13 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { StudioAlbumComponent } from './components/studio-album/studio-album.component';
 import { SubCategoriesComponent } from './components/sub-categories/sub-categories.component';
 import { SubAlbumComponent } from './components/sub-album/sub-album.component';
+import { MyAlbumComponent } from './components/my-album/my-album.component';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
+import { AddMyAlbumComponent } from './components/add-my-album/add-my-album.component';
 
 const routes: Routes = [
   {
-    path: '', redirectTo: 'home', pathMatch: 'full'
+    path: '', redirectTo: 'fine-art', pathMatch: 'full'
   },
   {
     path: 'log-in', component: LogInComponent
@@ -51,6 +54,9 @@ const routes: Routes = [
     path: 'news', component: NewsComponent
   },
   {
+    path: 'news-detail', component: NewsDetailComponent
+  },
+  {
     path: 'contact', component: ContactComponent
   },
   {
@@ -60,31 +66,37 @@ const routes: Routes = [
     path: 'home-full-view-detail', component: HomeFullViewDetailComponent
   },
   {
-    path: 'search-filters', component: SearchFiltersComponent
+    path: 'search-filters', component: SearchFiltersComponent, canActivate: [AuthGuard]
   },
   {
-    path: 'all-tags', component: AllTagsComponent
+    path: 'all-tags', component: AllTagsComponent, canActivate: [AuthGuard]
   },
   {
-    path: 'calender', component: CalenderComponent
+    path: 'calender', component: CalenderComponent, canActivate: [AuthGuard]
   },
   {
-    path: 'calender-preview', component: CalenderPreviewComponent
+    path: 'calender-preview', component: CalenderPreviewComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange', canActivate: [AuthGuard]
   },
   {
-    path: 'random-photos', component: RandomPhotosComponent
+    path: 'random-photos', component: RandomPhotosComponent, canActivate: [AuthGuard]
   },
   {
-    path: 'change-password', component: ChangePasswordComponent
+    path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]
   },
   {
-    path: 'studio-album', component: StudioAlbumComponent
+    path: 'studio-album', component: StudioAlbumComponent, canActivate: [AuthGuard]
   },
   {
-    path: 'sub-categories', component: SubCategoriesComponent
+    path: 'sub-categories', component: SubCategoriesComponent, canActivate: [AuthGuard]
   },
   {
-    path: 'sub-album', component: SubAlbumComponent
+    path: 'sub-album', component: SubAlbumComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: 'my-album', component: MyAlbumComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: 'add-my-album', component: AddMyAlbumComponent, canActivate: [AuthGuard]
   },
 ];
 

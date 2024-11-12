@@ -32,6 +32,10 @@ import { StudioAlbumComponent } from './components/studio-album/studio-album.com
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { SubCategoriesComponent } from './components/sub-categories/sub-categories.component';
 import { SubAlbumComponent } from './components/sub-album/sub-album.component';
+import { MyAlbumComponent } from './components/my-album/my-album.component';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
+import { NewsRecentPostComponent } from './components/news-recent-post/news-recent-post.component';
+import { AddMyAlbumComponent } from './components/add-my-album/add-my-album.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +64,10 @@ import { SubAlbumComponent } from './components/sub-album/sub-album.component';
     StudioAlbumComponent,
     SubCategoriesComponent,
     SubAlbumComponent,
+    MyAlbumComponent,
+    NewsDetailComponent,
+    NewsRecentPostComponent,
+    AddMyAlbumComponent,
   ],
   imports: [
     BrowserModule,

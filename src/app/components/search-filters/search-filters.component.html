@@ -1,60 +1,481 @@
+<app-header />
 <main class="py-4 h-auto">
       <div class="container-fluid">
-            <app-inner-header />
-            <div class="row mt-5">
-                  <div class="col-lg-3 mb-4">
-                        <app-sidebar />
-                  </div>
-                  <div class="col-lg-9  mb-4">
-                        <div class="ct_right_content">
-                              <div>
-                                    <div class="row">
-                                          <div class="col-lg-4 col-md-6 mb-5">
-                                                <a routerLink="/studio-album"
-                                                      class="ct_album_img ct_light_box_width_348">
-                                                      <img class="img-responsive" src="assets/img/img_15.jpg">
-                                                      <p>Hardo, 2016</p>
-                                                </a>
-                                          </div>
-                                          <div class="col-lg-4 col-md-6 mb-5">
-                                                <a routerLink="/studio-album"
-                                                      class="ct_album_img ct_light_box_width_348">
-                                                      <img class="img-responsive" src="assets/img/img_2.jpg">
-                                                      <p>Hardo, 2016</p>
-                                                </a>
-                                          </div>
-                                          <div class="col-lg-4 col-md-6 mb-5">
-                                                <a routerLink="/studio-album"
-                                                      class="ct_album_img ct_light_box_width_348">
-                                                      <img class="img-responsive" src="assets/img/img_22.jpg">
-                                                      <p>Hardo, 2016</p>
-                                                </a>
-                                          </div>
-                                          <div class="col-lg-4 col-md-6 mb-5">
-                                                <a routerLink="/studio-album"
-                                                      class="ct_album_img ct_light_box_width_348">
-                                                      <img class="img-responsive" src="assets/img/img_13.jpg">
-                                                      <p>Hardo, 2016</p>
-                                                </a>
-                                          </div>
-                                          <div class="col-lg-4 col-md-6 mb-5">
-                                                <a routerLink="/studio-album"
-                                                      class="ct_album_img ct_light_box_width_348">
-                                                      <img class="img-responsive" src="assets/img/img_27.jpg">
-                                                      <p>Hardo, 2016</p>
-                                                </a>
-                                          </div>
-                                          <div class="col-lg-4 col-md-6 mb-5">
-                                                <a routerLink="/studio-album"
-                                                      class="ct_album_img ct_light_box_width_348">
-                                                      <img class="img-responsive" src="assets/img/img_20.jpg">
-                                                      <p>Hardo, 2016</p>
-                                                </a>
+            <!-- <app-inner-header /> -->
+            <main class="py-4 h-auto">
+                  <div class="container-fluid">
+                        <div class="row">
+                              <div class="col-md-12 ct_px_40">
+                                    <div class="d-flex gap-3">
+                                          <a routerLink="/archives" class="ct_back_link d-flex align-items-center "><i
+                                                      class="fa-solid fa-arrow-left"></i></a>
+                                          <div class="ct_search_filter_cate_123">
+                                                <ul class="ps-0 mb-0">
+                                                      <li [ngClass]="{
+                                                            'active': searchWord || searchOptions.photo_title || searchOptions.file_name || 
+                                                                      searchOptions.author || searchOptions.comment || searchOptions.album_title || searchOptions.album_desc
+                                                          }" class="position-relative">
+                                                            <div class="ct_filters_btn">
+                                                                  <i class="bi bi-search"></i>
+                                                                  Search for words
+                                                                  <i class="fa-solid fa-angle-down"></i>
+                                                            </div>
+                                                            <div class="ct_custom_dropdown_12">
+                                                                  <div class="ct_filter-form filter-word-form">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between ct_flex_column_991 mb-3">
+                                                                              <div class="ct_filter-form-title">
+                                                                                    <i
+                                                                                          class="fa-solid fa-magnifying-glass"></i>Search
+                                                                                    for words
+                                                                              </div>
+                                                                              <div class="ct_filter-actions">
+                                                                                    <!-- <span class="ct_delete "><i
+                                                                                                class="fa-solid fa-trash me-1"></i>Delete</span> -->
+                                                                                    <span (click)="clearFilter('searchWord')"
+                                                                                          class="ct_clear"><i
+                                                                                                class="fa-solid fa-rotate-left me-1"></i>Clear</span>
+                                                                              </div>
+                                                                        </div>
+                                                                        <div class="ct_word-search-options">
+                                                                              <label>
+                                                                                    <input type="radio" name="mode"
+                                                                                          [(ngModel)]="searchMode"
+                                                                                          value="AND"
+                                                                                          (change)="onSearchModeChange()">
+                                                                                    Search for all terms
+                                                                              </label>
+                                                                              <label>
+                                                                                    <input type="radio" name="mode"
+                                                                                          [(ngModel)]="searchMode"
+                                                                                          value="OR"
+                                                                                          (change)="onSearchModeChange()">
+                                                                                    Search for any term
+                                                                              </label>
+                                                                        </div>
+
+                                                                        <input type="text" id="ct_word-search"
+                                                                              class="ct_input form-control"
+                                                                              [(ngModel)]="searchWord" name="word">
+
+                                                                        <span class="ct_search-params-title">Search
+                                                                              in:</span>
+                                                                        <div class="ct_search-params">
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2">
+                                                                                    <input type="checkbox"
+                                                                                          [(ngModel)]="searchOptions.photo_title"
+                                                                                          id="name" name="name">
+                                                                                    <label for="name">Photo
+                                                                                          title</label>
+                                                                              </div>
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2">
+                                                                                    <input type="checkbox"
+                                                                                          [(ngModel)]="searchOptions.file_name"
+                                                                                          id="file" name="file">
+                                                                                    <label for="file">File name</label>
+                                                                              </div>
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2">
+                                                                                    <input type="checkbox"
+                                                                                          [(ngModel)]="searchOptions.author"
+                                                                                          id="author" name="author">
+                                                                                    <label for="author">Author</label>
+                                                                              </div>
+                                                                              <!-- <div
+                                                                                    class="d-flex align-items-center gap-2">
+                                                                                    <input type="checkbox"
+                                                                                          [(ngModel)]="searchOptions.comment"
+                                                                                          id="comment" name="comment">
+                                                                                    <label for="comment">Photo
+                                                                                          description</label>
+                                                                              </div> -->
+                                                                              <!-- <div
+                                                                                    class="d-flex align-items-center gap-2">
+                                                                                    <input type="checkbox"
+                                                                                          [(ngModel)]="searchOptions.album_title"
+                                                                                          id="cat-title"
+                                                                                          name="cat-title">
+                                                                                    <label for="cat-title">Album
+                                                                                          title</label>
+                                                                              </div> -->
+                                                                              <!-- <div
+                                                                                    class="d-flex align-items-center gap-2">
+                                                                                    <input type="checkbox"
+                                                                                          [(ngModel)]="searchOptions.album_desc"
+                                                                                          id="cat-desc" name="cat-desc">
+                                                                                    <label for="cat-desc">Album
+                                                                                          description</label>
+                                                                              </div> -->
+                                                                        </div>
+                                                                        <button
+                                                                              class="ct_custom_btn mt-4 mx-auto d-block"
+                                                                              (click)="onValidate()">Validate</button>
+                                                                  </div>
+                                                            </div>
+
+                                                      </li>
+                                                      <li [ngClass]="{'active':selectedItems.length > 0 || tagSearchMode}"
+                                                            class="position-relative">
+                                                            <div class="ct_filters_btn">
+                                                                  <i class="bi bi-tag"></i>
+                                                                  Tag
+                                                                  <i class="fa-solid fa-angle-down"></i>
+                                                            </div>
+                                                            <div class="ct_custom_dropdown_12">
+                                                                  <div class="ct_filter-form filter-word-form">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between ct_flex_column_991">
+                                                                              <div class="ct_filter-form-title"><i
+                                                                                          class="fa-solid fa-tag"></i>Tag
+                                                                              </div>
+                                                                              <div class="ct_filter-actions">
+                                                                                    <!-- <span class="ct_delete "><i
+                                                                                                class="fa-solid fa-trash  me-1"></i>Delete</span> -->
+                                                                                    <span (click)="clearFilter('tag')"
+                                                                                          class="ct_clear"><i
+                                                                                                class="fa-solid fa-rotate-left me-1"></i>Clear</span>
+                                                                              </div>
+                                                                        </div>
+                                                                        <div class="ct_word-search-options">
+                                                                              <label><input type="radio" name="tag"
+                                                                                          [(ngModel)]="tagSearchMode"
+                                                                                          value="AND" checked=""> All
+                                                                                    tags</label>
+                                                                              <label>
+                                                                                    <input [(ngModel)]="tagSearchMode"
+                                                                                          type="radio" name="tag"
+                                                                                          value="OR"> Any tag</label>
+                                                                        </div>
+
+                                                                        <!-- <input type="text" id="ct_word-search" class="ct_input form-control" placeholder="Type in a search term" name="word"> -->
+                                                                        <div class="multi-select-container">
+                                                                              <div class="form-control ct_input ct_tags_select_656"
+                                                                                    (click)="toggleDropdown(true)">
+                                                                                    <ng-container
+                                                                                          *ngIf="selectedItems.length > 0 ;else default">
+                                                                                          <span *ngFor="let item of selectedItems"
+                                                                                                class="selected-item ">
+                                                                                                {{ item }}
+                                                                                                <span class="remove-item"
+                                                                                                      (click)="removeItem(item)">x</span>
+                                                                                          </span>
+                                                                                    </ng-container>
+                                                                                    <ng-template #default>
+                                                                                          Select
+                                                                                    </ng-template>
+                                                                              </div>
+                                                                              <div *ngIf="dropdownOpen"
+                                                                                    class="dropdown">
+                                                                                    <ul>
+                                                                                          <li *ngFor="let option of filteredOptions"
+                                                                                                (click)="selectItem(option.tag)">
+                                                                                                {{ option.tag }}
+                                                                                          </li>
+                                                                                          <div *ngIf="filteredOptions?.length == 0 || !filteredOptions"
+                                                                                                class="text-center">
+                                                                                                <p class="ct_fs_15">No
+                                                                                                      items found</p>
+                                                                                          </div>
+                                                                                    </ul>
+                                                                              </div>
+                                                                        </div>
+                                                                        <button
+                                                                              class="ct_custom_btn mt-4 mx-auto d-block"
+                                                                              (click)="onValidate()">Validate</button>
+                                                                  </div>
+                                                            </div>
+                                                      </li>
+                                                      <li [ngClass]="{'active': selectedPostDate }"
+                                                            class="position-relative">
+                                                            <div class="ct_filters_btn">
+                                                                  <i class="bi bi-calendar-check"></i>
+                                                                  Post date
+                                                                  <i class="fa-solid fa-angle-down"></i>
+                                                            </div>
+
+                                                            <div class="ct_custom_dropdown_12">
+                                                                  <div class="ct_filter-form filter-word-form">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between ct_flex_column_991">
+                                                                              <div class="ct_filter-form-title"> <i
+                                                                                          class="bi bi-calendar-check me-1"></i>Post
+                                                                                    date</div>
+                                                                              <div class="ct_filter-actions">
+                                                                                    <!-- <span class="ct_delete "><i
+                                                                                                class="fa-solid fa-trash  me-1"></i>Delete</span> -->
+                                                                                    <span (click)="clearFilter('postDate')"
+                                                                                          class="ct_clear"><i
+                                                                                                class="fa-solid fa-rotate-left me-1"></i>Clear</span>
+                                                                              </div>
+
+                                                                        </div>
+
+                                                                        <div class="ct_post_tag_list">
+                                                                              <ul>
+                                                                                    <li>
+                                                                                          <input type="checkbox"
+                                                                                                id="3_month" value="3"
+                                                                                                (change)="onPostDateChange($event,'3')"
+                                                                                                [checked]="selectedPostDate === '3'"
+                                                                                                name="name">
+                                                                                          <label for="3_month">Last 3
+                                                                                                months <span
+                                                                                                      class="ct_num_badge">{{data?.postDate.lastThreeMonthCount}}</span></label>
+                                                                                    </li>
+                                                                                    <li class="mt-2">
+                                                                                          <input type="checkbox"
+                                                                                                id="6_month" value="6"
+                                                                                                (change)="onPostDateChange($event, '6')"
+                                                                                                [checked]="selectedPostDate === '6'"
+                                                                                                name="name">
+                                                                                          <label for="6_month">Last 6
+                                                                                                months <span
+                                                                                                      class="ct_num_badge">{{data?.postDate.lastSixMonthCount}}</span></label>
+                                                                                    </li>
+                                                                              </ul>
+                                                                        </div>
+                                                                        <button
+                                                                              class="ct_custom_btn mt-4 mx-auto d-block"
+                                                                              (click)="onValidate()">Validate</button>
+                                                                  </div>
+                                                            </div>
+                                                      </li>
+                                                      <li [ngClass]="{'active': searchAlbumQuery || isInSubAlbumSearch }"
+                                                            class="position-relative">
+                                                            <div class="ct_filters_btn">
+                                                                  <i class="bi bi-folder"></i>
+                                                                  Album
+                                                                  <i class="fa-solid fa-angle-down"></i>
+                                                            </div>
+
+                                                            <div class="ct_custom_dropdown_12">
+                                                                  <div class="ct_filter-form filter-word-form">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between ct_flex_column_991">
+                                                                              <div class="ct_filter-form-title"> <i
+                                                                                          class="bi bi-folder me-1"></i>Post
+                                                                                    date</div>
+                                                                              <div class="ct_filter-actions">
+                                                                                    <!-- <span class="ct_delete "><i
+                                                                                                class="fa-solid fa-trash  me-1"></i>Delete</span> -->
+                                                                                    <span (click)="clearFilter('album')"
+                                                                                          class="ct_clear"><i
+                                                                                                class="fa-solid fa-rotate-left me-1"></i>Clear</span>
+                                                                              </div>
+
+                                                                        </div>
+                                                                        <div class="my-3">
+                                                                              <label for=""
+                                                                                    class="text-white mb-2">Search in
+                                                                                    albums</label>
+                                                                              <input type="text"
+                                                                                    [(ngModel)]="searchAlbumQuery"
+                                                                                    name="album"
+                                                                                    class="form-control ct_input">
+                                                                        </div>
+
+                                                                        <div class="ct_post_tag_list">
+                                                                              <ul>
+                                                                                    <li>
+                                                                                          <input type="checkbox"
+                                                                                                id="sub-albums"
+                                                                                                [(ngModel)]="isInSubAlbumSearch"
+                                                                                                name="name">
+                                                                                          <label for="sub-albums">Search
+                                                                                                in
+                                                                                                sub-albums</label>
+                                                                                    </li>
+                                                                              </ul>
+                                                                        </div>
+                                                                        <button
+                                                                              class="ct_custom_btn mt-4 mx-auto d-block"
+                                                                              (click)="onValidate()">Validate</button>
+                                                                  </div>
+                                                            </div>
+                                                      </li>
+                                                      <!-- <li class="position-relative">
+                                                            <div class="ct_filters_btn">
+                                                                  <i class="bi bi-file-image"></i>
+                                                                  Author
+                                                                  <i class="fa-solid fa-angle-down"></i>
+                                                            </div>
+                                                            <div class="ct_custom_dropdown_12">
+                                                                  <div class="ct_filter-form filter-word-form">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between mb-2 ct_flex_column_991">
+                                                                              <div class="ct_filter-form-title"> <i
+                                                                                          class="bi bi-file-image me-1"></i>Author
+                                                                              </div>
+                                                                              <div class="ct_filter-actions">
+                                                                                    <span class="ct_delete "><i
+                                                                                                class="fa-solid fa-trash  me-1"></i>Delete</span>
+                                                                                    <span class="ct_clear"><i
+                                                                                                class="fa-solid fa-rotate-left me-1"></i>Clear</span>
+                                                                              </div>
+                                                                        </div>
+
+
+                                                                        <select class="form-select ct_multiselect_2"
+                                                                              id="multiple-select-optgroup-field2"
+                                                                              data-placeholder="Choose one thing"
+                                                                              multiple>
+                                                                              <optgroup>
+                                                                                    <option>'90s (31 photos)</option>
+                                                                                    <option>'90s (31 photos)</option>
+                                                                                    <option>'90s (31 photos)</option>
+                                                                                    <option>'90s (31 photos)</option>
+                                                                                    <option>'90s (31 photos)</option>
+                                                                                    <option>'90s (31 photos)</option>
+                                                                              </optgroup>
+
+                                                                        </select>
+
+                                                                        <button
+                                                                              class="ct_custom_btn mt-4 mx-auto d-block">Validate</button>
+                                                                  </div>
+                                                            </div>
+                                                      </li> -->
+                                                      <li [ngClass]="{'active': addedby }" class="position-relative">
+                                                            <div class="ct_filters_btn">
+                                                                  <i class="bi bi-person"></i>
+                                                                  Added by
+                                                                  <i class="fa-solid fa-angle-down"></i>
+                                                            </div>
+
+                                                            <div class="ct_custom_dropdown_12">
+                                                                  <div class="ct_filter-form filter-word-form">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between ct_flex_column_991">
+                                                                              <div class="ct_filter-form-title"> <i
+                                                                                          class="bi bi-person"></i>
+                                                                                    Added by</div>
+                                                                              <div class="ct_filter-actions">
+                                                                                    <!-- <span class="ct_delete "><i
+                                                                                                class="fa-solid fa-trash  me-1"></i>Delete</span> -->
+                                                                                    <span (click)="clearFilter('addedBy')"
+                                                                                          class="ct_clear"><i
+                                                                                                class="fa-solid fa-rotate-left me-1"></i>Clear</span>
+                                                                              </div>
+
+                                                                        </div>
+
+                                                                        <div class="ct_post_tag_list">
+                                                                              <ul>
+                                                                                    @for (item of
+                                                                                    data?.authorWise.userWiseCount;
+                                                                                    track
+                                                                                    $index) {
+                                                                                    <li class="mt-2">
+                                                                                          <input type="checkbox"
+                                                                                                [value]="item.user_id"
+                                                                                                [id]="'user_'+ item.user_id"
+                                                                                                (change)="onAddedByChnage(item.user_id)"
+                                                                                                name="addedBy">
+                                                                                          <label
+                                                                                                [for]="'user_'+ item.user_id">{{item.name}}
+                                                                                                <span
+                                                                                                      class="ct_num_badge">{{item.image_count}}</span></label>
+                                                                                    </li>
+                                                                                    }
+                                                                              </ul>
+                                                                        </div>
+                                                                        <button
+                                                                              class="ct_custom_btn mt-4 mx-auto d-block"
+                                                                              (click)="onValidate()">Validate</button>
+                                                                  </div>
+                                                            </div>
+                                                      </li>
+                                                      <li [ngClass]="{'active': selectedFileType }"
+                                                            class="position-relative">
+                                                            <div class="ct_filters_btn">
+                                                                  <i class="bi bi-file-image"></i>
+                                                                  File type
+                                                                  <i class="fa-solid fa-angle-down"></i>
+                                                            </div>
+                                                            <div class="ct_custom_dropdown_12">
+                                                                  <div class="ct_filter-form filter-word-form">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between ct_flex_column_991">
+                                                                              <div class="ct_filter-form-title"> <i
+                                                                                          class="bi bi-file-image"></i>
+                                                                                    File type</div>
+                                                                              <div class="ct_filter-actions">
+                                                                                    <!-- <span class="ct_delete "><i
+                                                                                                class="fa-solid fa-trash  me-1"></i>Delete</span> -->
+                                                                                    <span (click)="clearFilter('fileType')"
+                                                                                          class="ct_clear"><i
+                                                                                                class="fa-solid fa-rotate-left me-1"></i>Clear</span>
+                                                                              </div>
+                                                                        </div>
+
+                                                                        <div class="ct_post_tag_list">
+                                                                              <ul>
+                                                                                    <li>
+                                                                                          <input type="checkbox"
+                                                                                                id="jpg"
+                                                                                                (change)="onFileTypeChange($event,'.jpg')"
+                                                                                                [checked]="selectedFileType === '.jpg'"
+                                                                                                name="name">
+                                                                                          <label for="jpg">jpg <span
+                                                                                                      class="ct_num_badge">3082</span></label>
+                                                                                    </li>
+                                                                                    <li class="mt-2">
+                                                                                          <input type="checkbox"
+                                                                                                id="png"
+                                                                                                (change)="onFileTypeChange($event,'.png')"
+                                                                                                [checked]="selectedFileType === '.png'"
+                                                                                                name="name">
+                                                                                          <label for="png">Png <span
+                                                                                                      class="ct_num_badge">3082</span></label>
+                                                                                    </li>
+                                                                              </ul>
+                                                                        </div>
+                                                                        <button
+                                                                              class="ct_custom_btn mt-4 mx-auto d-block"
+                                                                              (click)="onValidate()">Validate</button>
+                                                                  </div>
+                                                            </div>
+                                                      </li>
+                                                </ul>
+                                                <div *ngIf="dropdownOpen" class="overlay" (click)="closeAll()">
+                                                </div>
+                                                <div class="overlay_2" (click)="close()">
+                                                </div>
                                           </div>
                                     </div>
                               </div>
                         </div>
                   </div>
+            </main>
+            <div class="row mt-5">
+                  <div class="col-lg-3 mb-4">
+                        <app-sidebar />
+                  </div>
+                  <div class="col-lg-9 mb-4">
+                        <div class="ct_right_content">
+                              <div>
+                                    <div class="row">
+                                          <ng-container *ngIf="imgData.length > 0; else default2">
+                                                @for (item of imgData; track $index) {
+                                                <div class="col-lg-4 col-md-6 mb-5">
+                                                      <a routerLink="/studio-album" [queryParams]="{id : item?.id}"
+                                                            class="ct_album_img ct_light_box_width_348">
+                                                            <img [src]="item.image" alt="">
+                                                            <p>{{item.image_name}}, {{item.year}}</p>
+                                                      </a>
+                                                </div>
+                                                }
+                                          </ng-container>
+                                    </div>
+                              </div>
+                              <ng-template #default2>
+                                    <h2 class="text-white text-center mt-5">NO IMAGES FOUND !</h2>
+                              </ng-template>
+                        </div>
+                  </div>
             </div>
       </div>
 </main>
+<app-footer />

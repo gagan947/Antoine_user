@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -35,6 +35,14 @@ export class SharedService {
       .set('Access-Control-Allow-Origin', '*')
       .set('authorization', `Bearer ${this.authService.getToken()}`)
     return this.http.post(environment.baseUrl + url, data, { headers: headers })
+  }
+
+
+  private searchQuerySource = new BehaviorSubject<string>('');
+  currentSearchQuery = this.searchQuerySource.asObservable();
+
+  updateSearchQuery(query: string) {
+    this.searchQuerySource.next(query);
   }
 }
 

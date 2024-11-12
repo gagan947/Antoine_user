@@ -14,6 +14,8 @@ export class SubAlbumComponent {
   cat_id: any;
   category: any;
   subCategory: any;
+  tag_id: any;
+  tag: any;
 
   constructor(
     private service: SharedService,
@@ -21,23 +23,32 @@ export class SubAlbumComponent {
     private route: ActivatedRoute
   ) {
     this.route.queryParams.subscribe((params) => {
-      this.paramId = params['id']
-      this.cat_id = params['cat_id']
+      this.paramId = params['id'] ? params['id'] : undefined
+      this.cat_id = params['cat_id'] ? params['cat_id'] : undefined
+      this.tag_id = params['tag_id'] ? params['tag_id'] : undefined
+      this.getAlbum()
     });
   }
 
   ngOnInit() {
-    this.getAlbum()
+    // this.getAlbum()
   }
 
   getAlbum() {
     this.loading = true
-    let apiUrl = `image/getallimages-categorysubcategoryid?category_id=${this.cat_id}&subcategory_id=${this.paramId}`
+    let apiUrl = ``
+    if (this.tag_id) {
+      apiUrl = `image/getallimages-bytagid?tag_id=${this.tag_id}`
+    } else {
+      apiUrl = `image/getallimages-categorysubcategoryid?category_id=${this.cat_id}&subcategory_id=${this.paramId}`
+    }
+
     this.service.get(apiUrl).subscribe(res => {
       if (res.success) {
-        this.data = res.data.findImage
+        this.data = res.data.findImage ? res.data.findImage : res.data.findAllImage
         this.category = res.data.category
         this.subCategory = res.data.subcategory
+        this.tag = res.data.tag
         this.loading = false
       } else {
         this.loading = false

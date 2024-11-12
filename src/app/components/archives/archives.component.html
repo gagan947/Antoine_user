@@ -1,3 +1,4 @@
+<app-header />
 <main class="py-4 h-auto">
       <div class="container-fluid">
             <app-inner-header />
@@ -34,3 +35,7 @@
             </div>
       </div>
 </main>
+<app-footer />
+<div *ngIf="loading" class="ct_loader_main">
+      <div class="loader"></div>
+</div>

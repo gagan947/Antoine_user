@@ -1,0 +1,118 @@
+<app-header />
+<main class="py-4 h-auto">
+      <div class="container">
+            <h4 class="ct_fs_24 mb-3 ct_fw_600 text-white">NEWS</h4>
+            <div class="row">
+                  <div class="col-lg-8 mb-4">
+                        <div class="mt-4">
+                              <div class="ct_news_img mb-4">
+                                    <a>
+                                          <img [src]="data.image_url" alt="" class="w-100 ct_h_400">
+                                    </a>
+                              </div>
+                              <div class="ct_news_title">
+                                    <a>
+                                          <h4 class="ct_fs_24 ct_fw_600">{{data.title}}</h4>
+                                    </a>
+                                    <div>
+                                          <p class="mb-0  text-white"><i class="fa-solid fa-calendar-days me-2"></i>
+                                                {{data.news_post_date}}</p>
+
+                                          <h6 class="text-white" [innerHTML]="data.description"></h6>
+                                    </div>
+
+                                    <div class="mt-4">
+                                          <ul
+                                                class="ct_tags_list_234 d-flex align-items-center gap-3 flex-wrap ps-0 mb-0">
+                                                <li><a href="#"
+                                                            style="background-color: #f5f5f5; color: #000;">architecture</a>
+                                                </li>
+                                                <li><a href="#"
+                                                            style="background-color: #f5f5f5; color: #000;">portraiture</a>
+                                                </li>
+                                                <li><a href="#" style="background-color: #f5f5f5; color: #000;">fine
+                                                            arts</a></li>
+                                                <li><a href="#"
+                                                            style="background-color: #f5f5f5; color: #000;">exhibition</a>
+                                                </li>
+                                          </ul>
+                                    </div>
+                                    <div class="ct_footer  mt-4">
+                                          <ul class="justify-content-start ps-0">
+                                                <li>
+                                                      <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                                                </li>
+                                                <li>
+                                                      <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                                                </li>
+                                                <li>
+                                                      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                                </li>
+                                          </ul>
+                                          <p>
+                                                Copyright © 2021 - <a href="" class="ct_text_cyan ct_fw_600">antoine
+                                                      tempé</a> - All Rights Reserved.
+                                          </p>
+                                    </div>
+                                    <div class="mt-4">
+                                          <h4 class="ct_fs_20 text-white mt-4 mb-5">Share your thoughts
+                                          </h4>
+                                          <form>
+                                                <div class="row">
+                                                      <div class="col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                  <label for="" class="mb-2 text-white">Name
+                                                                        <span>*</span></label>
+                                                                  <input type="text" class="ct_input form-control">
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                  <label for="" class="mb-2 text-white">Email
+                                                                        <span>*</span></label>
+                                                                  <input type="email" class="ct_input form-control">
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-md-12">
+                                                            <div class="form-group mb-3">
+                                                                  <label for="" class="mb-2 text-white">Website
+                                                                        <span>*</span></label>
+                                                                  <input type="text" class="ct_input form-control">
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-md-12">
+                                                            <div class="form-group mb-3">
+                                                                  <label for="" class="mb-2 text-white">Comment
+                                                                        <span>*</span></label>
+                                                                  <textarea class="ct_input form-control h-auto"
+                                                                        rows="5"></textarea>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <button class="ct_cyan_btn  mt-3">Comment</button>
+                                                <div class="ct_login_bottom mt-3">
+                                                      <div class="checkbox-wrapper-46">
+                                                            <input type="checkbox" id="cbx-46" class="inp-cbx" />
+                                                            <label for="cbx-46" class="cbx"><span>
+                                                                        <svg viewBox="0 0 12 10" height="10px"
+                                                                              width="12px">
+                                                                              <polyline points="1.5 6 4.5 9 10.5 1">
+                                                                              </polyline>
+                                                                        </svg></span><span class="text-white">Save my
+                                                                        name, email, and website in this browser for the
+                                                                        next time I comment.</span>
+                                                            </label>
+                                                      </div>
+                                                </div>
+                                          </form>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="col-lg-4 mb-4">
+                        <app-news-recent-post />
+                  </div>
+            </div>
+      </div>
+</main>
+<app-footer />

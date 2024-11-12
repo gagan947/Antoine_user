@@ -4,19 +4,20 @@
             <div class="accordion-item">
                   <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                              [attr.data-bs-target]="'#'+item?.category_name" aria-expanded="true"
+                              [attr.data-bs-target]="'#'+item?.id" aria-expanded="true"
                               aria-controls="panelsStayOpen-collapseOne">
                               {{item.category_name | uppercase}}
                         </button>
                   </h2>
-                  <div [id]="item?.category_name" class="accordion-collapse collapse"
-                        [ngClass]="$index == 0 ? 'show':''" aria-labelledby="panelsStayOpen-headingOne">
+                  <div [id]="item?.id" class="accordion-collapse collapse" [ngClass]="$index == 0 ? 'show':''"
+                        aria-labelledby="panelsStayOpen-headingOne">
                         <div class="accordion-body">
                               <ul class="ct_filter_side_links">
                                     @for (item2 of item.findImageSubcategory; track $index) {
                                     <li>
-                                          <a routerLink="/sub-categories" [queryParams]="{id : item.id}">•
-                                                {{item2.category_name | uppercase}}
+                                          <a routerLink="/sub-album"
+                                                [queryParams]="{cat_id : item2?.category_id, id : item2?.id}">•
+                                                {{item2.subcategory_name | uppercase}}
                                                 [{{item2.count}}]
                                           </a>
                                     </li>
@@ -27,5 +28,4 @@
             </div>
             }
       </div>
-
 </div>

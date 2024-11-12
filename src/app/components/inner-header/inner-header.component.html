@@ -1,8 +1,13 @@
 <div class="row">
       <div class="col-md-12 ct_px_40">
-            <div class="ct-search_filter">
-                  <input type="text" placeholder="Search" class="form-control ct_input">
-                  <i class="fa-solid fa-magnifying-glass"></i>
+            <div class="d-flex justify-content-end gap-4">
+                  <div class="ct-search_filter">
+                        <input [(ngModel)]="searchQuery" (keydown.enter)="onSearch()" type="text" placeholder="Search"
+                              class="form-control ct_input">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                  <button *ngIf="userData.role == '2'" routerLink="/my-album" class="ct_cyan_btn ct_fs_16">My
+                        Album</button>
             </div>
             <div class="ct_archive_home_tab_links">
                   <ul>
