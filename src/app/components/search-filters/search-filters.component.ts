@@ -158,7 +158,9 @@ export class SearchFiltersComponent {
   }
 
   selectItem(option: { tag: string }) {
-    this.selectedItems.push(option)
+    if (!this.selectedItems.includes(option)) {
+      this.selectedItems.push(option);
+    }
     this.searchTerm = '';
   }
 

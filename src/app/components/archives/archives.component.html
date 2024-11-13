@@ -20,9 +20,13 @@
                                                             </div>
                                                             <figcaption>
                                                                   <h4>{{item.category_name | uppercase}}</h4>
-                                                                  <p class="mb-0">{{item.count}} photos in
-                                                                        {{item.findImageSubcategory.length}}
-                                                                        sub-albums</p>
+                                                                  <p class="mb-0">
+                                                                        {{ item.count }} {{ item.count > 1 ? 'photos' :
+                                                                        'photo' }} in
+                                                                        {{ item.findImageSubcategory.length }} {{
+                                                                        item.findImageSubcategory.length > 1 ?
+                                                                        'sub-albums' : 'sub-album' }}
+                                                                  </p>
                                                             </figcaption>
                                                       </figure>
                                                 </a>
