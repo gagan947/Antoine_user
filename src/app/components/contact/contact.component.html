@@ -8,7 +8,8 @@
                               <form [formGroup]="ContactUsForm" (ngSubmit)="onSubmit(ContactUsForm)">
                                     <div class="form-group mb-3">
                                           <label for="" class="mb-2 text-white">Your First Name</label>
-                                          <input type="text" class="ct_input form-control" formControlName="firstName">
+                                          <input type="text" class="ct_input form-control"
+                                                placeholder="Enter First Name" formControlName="firstName">
                                           <p *ngIf="
                                           ContactUsForm.controls['firstName'].errors &&
                                           ContactUsForm.controls['firstName'].touched
@@ -22,8 +23,9 @@
                                           </p>
                                     </div>
                                     <div class="form-group mb-3">
-                                          <label for="" class="mb-2 text-white">Your last Name</label>
-                                          <input type="text" class="ct_input form-control" formControlName="lastName">
+                                          <label for="" class="mb-2 text-white">Your Last Name</label>
+                                          <input type="text" class="ct_input form-control" placeholder="Enter Last Name"
+                                                formControlName="lastName">
                                           <p *ngIf="
                                           ContactUsForm.controls['lastName'].errors &&
                                           ContactUsForm.controls['lastName'].touched
@@ -38,7 +40,8 @@
                                     </div>
                                     <div class="form-group mb-3">
                                           <label for="" class="mb-2 text-white">Your Company</label>
-                                          <input type="text" class="ct_input form-control" formControlName="company">
+                                          <input type="text" class="ct_input form-control"
+                                                placeholder="Enter Company Name" formControlName="company">
                                           <p *ngIf="
                                           ContactUsForm.controls['company'].errors &&
                                           ContactUsForm.controls['company'].touched
@@ -53,7 +56,8 @@
                                     </div>
                                     <div class="form-group mb-3">
                                           <label for="" class="mb-2 text-white">Your Email Address</label>
-                                          <input type="text" class="ct_input form-control" formControlName="email">
+                                          <input type="text" class="ct_input form-control"
+                                                placeholder="Enter Email Address" formControlName="email">
                                           <p *ngIf="
                                           ContactUsForm.controls['email'].errors &&
                                           ContactUsForm.controls['email'].touched
@@ -67,8 +71,9 @@
                                           </p>
                                     </div>
                                     <div class="form-group mb-3">
-                                          <label for="" class="mb-2 text-white">Your preferred language</label>
-                                          <select class="ct_input form-control" formControlName="language">
+                                          <label for="" class="mb-2 text-white">Your Preferred Language</label>
+                                          <select class=" form-control ct_input ct_height_input_38"
+                                                formControlName="language">
                                                 <option value="">-- Select --</option>
                                                 <option value="English">English</option>
                                                 <option value="Hindi">Hindi</option>
