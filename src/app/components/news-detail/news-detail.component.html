@@ -1,7 +1,11 @@
 <app-header />
 <main class="py-4 h-auto">
       <div class="container">
-            <h4 class="ct_fs_24 mb-3 ct_fw_600 text-white">NEWS</h4>
+            <div class="d-flex align-items-center gap-3 mb-3 ">
+                  <a href="#" class="ct_back_icon_arrow_12" routerLink="/news"><i
+                              class="fa-solid fa-chevron-left"></i></a>
+                  <h4 class="ct_fs_24 mb-0 ct_fw_600 text-white">News Detail</h4>
+            </div>
             <div class="row">
                   <div class="col-lg-8 mb-4">
                         <div class="mt-4">
@@ -12,13 +16,13 @@
                               </div>
                               <div class="ct_news_title">
                                     <a>
-                                          <h4 class="ct_fs_24 ct_fw_600">{{data.title}}</h4>
+                                          <h4 class="ct_fs_24 ct_fw_600 text-white">{{data.title}}</h4>
                                     </a>
-                                    <div>
+                                    <div class="mt-2">
                                           <p class="mb-0  text-white"><i class="fa-solid fa-calendar-days me-2"></i>
                                                 {{data.news_post_date}}</p>
 
-                                          <h6 class="text-white" [innerHTML]="data.description"></h6>
+                                          <h6 class="text-white mt-3" [innerHTML]="data.description"></h6>
                                     </div>
 
                                     <div class="mt-4">

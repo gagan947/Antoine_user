@@ -75,8 +75,10 @@
                                                 (mousemove)="dragImage($event)" (mouseup)="stopDragging()"
                                                 (mouseleave)="stopDragging()" (touchstart)="startDragging($event)"
                                                 (touchmove)="dragImage($event)" (touchend)="stopDragging()">
-                                                <img [src]="data?.image" alt="" class="image" [ngStyle]="{'transform': 'scale(' + zoomLevel + ') translate(' + translateX + 'px, ' + translateY + 'px)', 
-                                                'transform-origin': 'center'}">
+                                                <div class="ct_overflow_hidden ">
+                                                      <img [src]="data?.image" alt="" class="image" [ngStyle]="{'transform': 'scale(' + zoomLevel + ') translate(' + translateX + 'px, ' + translateY + 'px)', 
+                                                      'transform-origin': 'center'}">
+                                                </div>
                                                 <p class="mb-0 text-white text-center mt-3"><a class="text-white"
                                                             routerLink="/archives">Home</a>
                                                       /

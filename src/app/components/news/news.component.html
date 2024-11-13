@@ -13,7 +13,7 @@
                               </div>
                               <div class="ct_news_title">
                                     <a routerLink="/news-detail" [queryParams]="{news_id : item?.id}">
-                                          <h4 class="ct_fs_24 ct_fw_600">{{item.title}}</h4>
+                                          <h4 class="ct_fs_24 ct_fw_600 ct_clip_text_in_dot">{{item.title}}</h4>
 
                                     </a>
                                     <p class="text-white news_desc" [innerHTML]="item.description"></p>
