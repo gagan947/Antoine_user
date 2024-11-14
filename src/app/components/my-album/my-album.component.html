@@ -12,45 +12,52 @@
                                           Album</button>
                               </div>
                               <div class="row">
-                                    @for (item of ImgData; track $index) {
-                                    <div class="col-lg-3 col-md-6 mb-5">
-                                          <div class="ct_album_card ct_light_black_bg">
-                                                <a>
-                                                      <figure>
-                                                            <div class="ct_album_img position-relative">
-                                                                  <img [src]="item.image" alt="">
-                                                                  <div class="dropdown ct_my_album_drop">
-                                                                        <i class="fa-solid fa-ellipsis-vertical"
-                                                                              id="dropdownMenuButton1"
-                                                                              data-bs-toggle="dropdown"
-                                                                              aria-expanded="false"></i>
-                                                                        <ul class="dropdown-menu"
-                                                                              aria-labelledby="dropdownMenuButton1">
-                                                                              <!-- <li><a class="dropdown-item">Hide</a></li> -->
-                                                                              <li><a *ngIf="item.collaburate_status == 0"
-                                                                                          class="dropdown-item"
-                                                                                          (click)="collabrate(item.id)">Collabrate</a>
-                                                                              </li>
-                                                                              <li><a class="dropdown-item"
-                                                                                          routerLink="/add-my-album"
-                                                                                          [queryParams]="{id : item?.id}">Edit</a>
-                                                                              </li>
-                                                                              <!-- <li><a class="dropdown-item">Delete</a>
+                                    <ng-container *ngIf="ImgData?.length>0 ;else default">
+                                          @for (item of ImgData; track $index) {
+                                          <div class="col-lg-3 col-md-6 mb-5">
+                                                <div class="ct_album_card ct_light_black_bg">
+                                                      <a>
+                                                            <figure>
+                                                                  <div class="ct_album_img position-relative">
+                                                                        <img [src]="item.image" alt="">
+                                                                        <div class="dropdown ct_my_album_drop">
+                                                                              <i class="fa-solid fa-ellipsis-vertical"
+                                                                                    id="dropdownMenuButton1"
+                                                                                    data-bs-toggle="dropdown"
+                                                                                    aria-expanded="false"></i>
+                                                                              <ul class="dropdown-menu"
+                                                                                    aria-labelledby="dropdownMenuButton1">
+                                                                                    <!-- <li><a class="dropdown-item">Hide</a></li> -->
+                                                                                    <li><a *ngIf="item.collaburate_status == 0"
+                                                                                                class="dropdown-item"
+                                                                                                (click)="collabrate(item.id)">Collabrate</a>
+                                                                                    </li>
+                                                                                    <li><a class="dropdown-item"
+                                                                                                routerLink="/add-my-album"
+                                                                                                [queryParams]="{id : item?.id}">Edit</a>
+                                                                                    </li>
+                                                                                    <!-- <li><a class="dropdown-item">Delete</a>
                                                                               </li> -->
-                                                                        </ul>
+                                                                              </ul>
 
+                                                                        </div>
                                                                   </div>
-                                                            </div>
-                                                            <figcaption>
-                                                                  <h4>{{item.image_name}}</h4>
-                                                                  <p class="mb-0">{{item.created_at | date:'medium'}}
-                                                                  </p>
-                                                            </figcaption>
-                                                      </figure>
-                                                </a>
+                                                                  <figcaption>
+                                                                        <h4>{{item.image_name}}</h4>
+                                                                        <p class="mb-0">{{item.created_at |
+                                                                              date:'medium'}}
+                                                                        </p>
+                                                                  </figcaption>
+                                                            </figure>
+                                                      </a>
+                                                </div>
                                           </div>
-                                    </div>
-                                    }
+                                          }
+                                    </ng-container>
+                                    <ng-template #default>
+                                          <h2 class="text-white text-center mt-5 no_data">NO IMAGES FOUND IN YOUR ALBUM
+                                                !</h2>
+                                    </ng-template>
                               </div>
                         </div>
                   </div>

@@ -56,7 +56,7 @@ export class SignUpComponent {
     formData.set('name', form.value.name)
     formData.set('email', form.value.email)
     formData.set('password', form.value.password)
-    formData.set('phone', form.value.phone.number)
+    formData.set('phone', form.value.phone.e164Number)
     formData.set('role', '3')
     formData.set('verify_status', '0')
     formData.set('permission', JSON.stringify(permissions))

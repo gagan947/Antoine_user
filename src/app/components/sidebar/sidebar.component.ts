@@ -31,4 +31,8 @@ export class SidebarComponent {
       }
     })
   }
+
+  hasValidSubcategories(item: any): boolean {
+    return item.findImageSubcategory && item.findImageSubcategory.some((sub: any) => sub.subcategory_name);
+  }
 }

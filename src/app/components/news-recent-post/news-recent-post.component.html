@@ -4,8 +4,9 @@
             </h4>
             <ul class="ps-0 mb-0">
                   @for (item of data; track $index) {
-                  <li>
-                        <p class="text-white mb-2">{{item.title}}</p>
+                  <li class="mb-3">
+                        <a routerLink="/news-detail" [queryParams]="{news_id : item?.id}" class="text-white mb-2">
+                              {{item.title}}</a>
                         <p class="mb-0 text-white ct_text_op_08">{{item.news_post_date}}</p>
                   </li>
                   }

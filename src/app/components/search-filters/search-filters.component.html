@@ -337,7 +337,8 @@
                                                                   </div>
                                                             </div>
                                                       </li> -->
-                                                      <li [ngClass]="{'active': addedby }" class="position-relative">
+                                                      <li [ngClass]="{'active': addedby.length > 0}"
+                                                            class="position-relative">
                                                             <div class="ct_filters_btn">
                                                                   <i class="bi bi-person"></i>
                                                                   Added by
@@ -418,8 +419,7 @@
                                                                                                 (change)="onFileTypeChange($event,'.jpg')"
                                                                                                 [checked]="selectedFileType === '.jpg'"
                                                                                                 name="name">
-                                                                                          <label for="jpg">jpg <span
-                                                                                                      class="ct_num_badge">3082</span></label>
+                                                                                          <label for="jpg">jpg </label>
                                                                                     </li>
                                                                                     <li class="mt-2">
                                                                                           <input type="checkbox"
@@ -427,8 +427,7 @@
                                                                                                 (change)="onFileTypeChange($event,'.png')"
                                                                                                 [checked]="selectedFileType === '.png'"
                                                                                                 name="name">
-                                                                                          <label for="png">Png <span
-                                                                                                      class="ct_num_badge">3082</span></label>
+                                                                                          <label for="png">Png </label>
                                                                                     </li>
                                                                               </ul>
                                                                         </div>
@@ -457,7 +456,7 @@
                         <div class="ct_right_content">
                               <div>
                                     <div class="row">
-                                          <ng-container *ngIf="imgData.length > 0; else default2">
+                                          <ng-container *ngIf="imgData?.length > 0; else default2">
                                                 @for (item of imgData; track $index) {
                                                 <div class="col-lg-4 col-md-6 mb-5">
                                                       <a routerLink="/studio-album" [queryParams]="{id : item?.id}"
@@ -479,3 +478,7 @@
       </div>
 </main>
 <app-footer />
+
+<div *ngIf="loading" class="ct_loader_main">
+      <div class="loader"></div>
+</div>

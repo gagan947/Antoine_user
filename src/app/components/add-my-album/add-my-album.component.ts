@@ -16,6 +16,8 @@ export class AddMyAlbumComponent {
   tagData: any;
   uploadImg: any;
   ImgData: any;
+  uploadedImage: any;
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -45,9 +47,16 @@ export class AddMyAlbumComponent {
 
   ngFileInputChange(e: any) {
     this.uploadImg = e.target.files[0]
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.uploadedImage = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   onSubmit(form: any) {
+    this.loading = true
     form.markAllAsTouched()
     if (form.invalid) {
       return
@@ -68,7 +77,6 @@ export class AddMyAlbumComponent {
       formData.append('file', this.uploadImg)
       formData.append('id', this.paramId)
       formData.append('tag_id', tags)
-      formData.append('collaburate_status', "0")
     } else {
       apiUrl = `image/create`
       formData.append('category', JSON.stringify(categories))
@@ -84,6 +92,7 @@ export class AddMyAlbumComponent {
       } else {
         this.toastr.error(res.message)
       }
+      this.loading = false
     })
   }
 
@@ -100,15 +109,16 @@ export class AddMyAlbumComponent {
     this.service.get(apiurl).subscribe(res => {
       if (res.success) {
         const data = res.imageData.findImageProfile[0]
+        this.selectedItems = [...data.tags]
         data.sub_album.forEach((album: any) => {
           this.filteredCatOptions.forEach(category => {
-            if (category.id === album.category_id) {
+            if (category.id == album.category_id) {
               category.subcategoryData.forEach((subcategory: any) => {
-                if (subcategory.id === album.subcategory_id) {
+                if (subcategory.id == album.subcategory_id) {
                   subcategory.selected = true;
                   category.selected = true
                   const existingItem = this.selectedCatItems.find(item =>
-                    item.categoryId === category.id && item.subcategoryId === subcategory.id
+                    item.categoryId == category.id && item.subcategoryId == subcategory.id
                   );
 
                   if (!existingItem) {
@@ -126,8 +136,8 @@ export class AddMyAlbumComponent {
           });
         });
 
-        this.selectedItems = [...data.tags]
 
+        this.uploadedImage = data.image;
       } else {
         this.toastr.error(res.message)
       }

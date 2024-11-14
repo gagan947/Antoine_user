@@ -15,7 +15,7 @@
                                                 <h4 class="text-white  ct_fs_20 mb-0">Home</h4>
                                           </a>
                                     </li>
-                                    <li>
+                                    <li *ngIf="data?.length > 0">
                                           /
                                     </li>
                                     <li>
@@ -34,7 +34,9 @@
                                                             </div>
                                                             <figcaption>
                                                                   <h4>{{item?.subcategory_name | uppercase}}</h4>
-                                                                  <p class="mb-0">{{item?.count}} photos</p>
+                                                                  <p class="mb-0">{{item?.count}} {{ item?.count > 1 ?
+                                                                        'photos' :
+                                                                        'photo' }}</p>
                                                             </figcaption>
                                                       </figure>
                                                 </a>

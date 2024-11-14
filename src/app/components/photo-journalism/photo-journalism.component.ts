@@ -54,7 +54,7 @@ export class PhotoJournalismComponent {
 
   getImages() {
     this.loading = true;
-    let apiUrl = `website-images/get-websiteimages?website_category_id=3&website_subcategory_id=${this.selectedId}&limit=${this.limit}&offset=${this.offset}`
+    let apiUrl = `website-images/get-websiteimages?website_category_id=2&website_subcategory_id=${this.selectedId}&limit=${this.limit}&offset=${this.offset}`
     this.service.get(apiUrl).subscribe(res => {
       if (res.success) {
         const fetchedData = res.data.findImage || [];

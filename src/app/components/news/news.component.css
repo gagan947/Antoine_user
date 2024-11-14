@@ -10,3 +10,7 @@
       object-fit: cover;
       border-radius: 10px;
 }
+
+.ct_news_card_12 {
+      overflow: hidden;
+}

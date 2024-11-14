@@ -1,7 +1,7 @@
 <main #fullScreenContainer class="ct_py_100 pt-5 h-auto position-relative">
       <div class="container">
             <div class="row">
-                  <div *ngIf="copySuccess" class="copy-message">Data copied to clipboard !</div>
+                  <div *ngIf="copySuccess" class="copy-message">copied to clipboard !</div>
                   <div class="col-md-12">
                         <div>
                               <a routerLink="/archives" class="ct_studio_close_btn">
@@ -58,7 +58,7 @@
                                                             d="M2.93 17.07A10 10 0 1 1 17.07 2.93A10 10 0 0 1 2.93 17.07m12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32M7 6h2v8H7zm4 0h2v8h-2z" />
                                                 </svg>
                                           </li>
-                                          <li title="Download" *ngIf="userData.role== '2'"
+                                          <li title="Download" *ngIf="userData.role== '2' || permissionObject.DNI"
                                                 (click)="downloadImage(data?.image, data?.image_name, data?.id)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                       viewBox="0 0 24 24">
@@ -126,7 +126,9 @@
                                                                   <li> <a class="text-white"
                                                                               routerLink="/sub-categories"
                                                                               [queryParams]="{id : item?.category_id}">{{item.category_name
-                                                                              | uppercase}}</a> /
+                                                                              | uppercase}}</a> <ng-container
+                                                                              *ngIf="item.subcategory_name"> /
+                                                                        </ng-container>
                                                                         <a class="text-white" routerLink="/sub-album"
                                                                               [queryParams]="{cat_id : item?.category_id, id : item?.subcategory_id}">{{item.subcategory_name
                                                                               | uppercase}}</a>

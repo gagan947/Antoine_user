@@ -6,15 +6,6 @@
                         <div class="modal-body">
                               <h4 class="text-white text-center mb-4">Add New Album</h4>
                               <div class="row">
-                                    <div class="col-lg-6">
-                                          <div class="form-group mb-3">
-                                                <label for="" class="ct_fw_600 text-white mb-2">Media <span
-                                                            class="ct_red_star">*</span></label>
-                                                <input type="file" class="form-control ct_input"
-                                                      (change)="ngFileInputChange($event)" formControlName="name">
-                                          </div>
-                                    </div>
-
                                     <!-- Category & Sub Category -->
 
                                     <div class="col-lg-6">
@@ -85,53 +76,81 @@
 
                                           </div>
                                     </div>
-                              </div>
 
-                              <div class="col-lg-6">
-                                    <div class="form-group">
-                                          <label for="" class="ct_fw_600 text-white mb-2">Tags <span
-                                                      class="ct_red_star">*</span></label>
-                                          <div class="multi-select-container">
-                                                <div class="form-control ct_input py-0" (click)="toggleDropdown(true)">
-                                                      <ng-container *ngIf="selectedItems.length > 0 ;else default">
-                                                            <span *ngFor="let item of selectedItems"
-                                                                  class="selected-item">
-                                                                  {{ item.tag }}
-                                                                  <span class="remove-item"
-                                                                        (click)="removeItem(item)">x</span>
-                                                            </span>
-                                                      </ng-container>
-                                                      <ng-template #default>
-                                                            Select
-                                                      </ng-template>
-                                                </div>
-                                                <div *ngIf="dropdownOpen" class="custom_dropdown">
-                                                      <input type="text" class="ct_input ct_input_search"
-                                                            placeholder="Search..." formControlName="tags"
-                                                            [(ngModel)]="searchTerm" (input)="filterOptions()" />
-                                                      <ul>
-                                                            <li *ngFor="let option of filteredOptions"
-                                                                  (click)="selectItem(option)">
-                                                                  {{ option.tag }}
-                                                            </li>
-                                                            <div *ngIf="filteredOptions?.length == 0 || !filteredOptions"
-                                                                  class="text-center">
-                                                                  <p class="ct_fs_15">No items found</p>
-                                                            </div>
-                                                      </ul>
+
+                                    <div class="col-lg-6">
+                                          <div class="form-group">
+                                                <label for="" class="ct_fw_600 text-white mb-2">Tags <span
+                                                            class="ct_red_star">*</span></label>
+                                                <div class="multi-select-container">
+                                                      <div class="form-control ct_input" (click)="toggleDropdown(true)">
+                                                            <ng-container
+                                                                  *ngIf="selectedItems.length > 0 ;else default">
+                                                                  <span *ngFor="let item of selectedItems"
+                                                                        class="selected-item">
+                                                                        {{ item.tag }}
+                                                                        <span class="remove-item"
+                                                                              (click)="removeItem(item)">x</span>
+                                                                  </span>
+                                                            </ng-container>
+                                                            <ng-template #default>
+                                                                  Select
+                                                            </ng-template>
+                                                      </div>
+                                                      <div *ngIf="dropdownOpen" class="custom_dropdown">
+                                                            <input type="text" class="ct_input ct_input_search"
+                                                                  placeholder="Search..." formControlName="tags"
+                                                                  [(ngModel)]="searchTerm" (input)="filterOptions()" />
+                                                            <ul>
+                                                                  <li *ngFor="let option of filteredOptions"
+                                                                        (click)="selectItem(option)">
+                                                                        {{ option.tag }}
+                                                                  </li>
+                                                                  <div *ngIf="filteredOptions?.length == 0 || !filteredOptions"
+                                                                        class="text-center">
+                                                                        <p class="ct_fs_15">No items found</p>
+                                                                  </div>
+                                                            </ul>
+                                                      </div>
                                                 </div>
                                           </div>
                                     </div>
-                              </div>
 
+                                    <div class="col-lg-6">
+                                          <div class="form-group mb-3">
+                                                <ng-container *ngIf="!uploadedImage; else preview">
+                                                      <div class="form-group mb-3">
+                                                            <label for="" class="ct_fw_600 text-white mb-2">Media <span
+                                                                        class="ct_red_star">*</span></label>
+                                                            <input type="file" class="form-control ct_input"
+                                                                  accept="image/jpeg, image/jpg, image/png, image/gif, video/mp4, video/mov, video/avi, video/x-matroska"
+                                                                  (change)="ngFileInputChange($event)"
+                                                                  formControlName="name">
+                                                      </div>
+                                                </ng-container>
+                                                <ng-template #preview>
+                                                      <div class="mb-2 position-relative w-fit">
+                                                            <img [src]="uploadedImage" alt="Uploaded Image"
+                                                                  class="img-thumbnail" style="max-width: 150px;">
+                                                            <i class="fa fa-times-circle close_btn" aria-hidden="true"
+                                                                  (click)="uploadedImage = null"></i>
+                                                      </div>
+                                                </ng-template>
+                                          </div>
+                                    </div>
+                              </div>
                               <div *ngIf="dropdownOpenCat || dropdownOpen" class="overlay" (click)="closeAll()">
                               </div>
                         </div>
                         <div class="border-0 mt-5">
-                              <button type="reset" class=" ct_grey_btn py-2 ct_fs_16 me-3">Close</button>
+                              <button routerLink="/my-album" class=" ct_grey_btn py-2 ct_fs_16 me-3">Close</button>
                               <button type="submit" class=" ct_cyan_btn py-2 ct_fs_16">Save</button>
                         </div>
                   </form>
             </div>
       </div>
 </main>
+<app-footer></app-footer>
+<div *ngIf="loading" class="ct_loader_main">
+      <div class="loader"></div>
+</div>

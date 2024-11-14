@@ -15,7 +15,7 @@
             </div>
             <div>
                   <div>
-                        <ng-container *ngIf="data.length>0 ;else default">
+                        <ng-container *ngIf="data?.length>0 ;else default">
                               <div class="ct_search_messanory_grid ct_home_page_messanory_grid_23">
                                     @for (item of data; track $index) {
                                     <a class="">

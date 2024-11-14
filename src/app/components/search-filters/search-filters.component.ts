@@ -28,7 +28,7 @@ export class SearchFiltersComponent {
   selectedFileType: string = '';
   searchAlbumQuery: string = ''
   isInSubAlbumSearch: boolean = false;
-  addedby: any
+  addedby: any[] = []
 
   constructor(
     private service: SharedService,
@@ -113,7 +113,7 @@ export class SearchFiltersComponent {
     let formData = new URLSearchParams()
 
     formData.set("post_date", this.selectedPostDate)
-    formData.set("author", this.addedby ? this.addedby : '')
+    formData.set("author", this.addedby ? this.addedby.join(', ') : '')
     formData.set("file_type", this.selectedFileType)
     formData.set("album", JSON.stringify(albumObj))
     formData.set("tag", JSON.stringify(tagObj))
@@ -194,7 +194,13 @@ export class SearchFiltersComponent {
   }
 
   onAddedByChnage(user_id: any) {
-    this.addedby = user_id
+    const index = this.addedby.indexOf(user_id);
+
+    if (index === -1) {
+      this.addedby.push(user_id);
+    } else {
+      this.addedby.splice(index, 1);
+    }
   }
 
   clearFilter(type: string) {
@@ -233,7 +239,7 @@ export class SearchFiltersComponent {
         return
 
       case 'addedBy':
-        this.addedby = undefined
+        this.addedby = []
         this.onValidate()
         return
 

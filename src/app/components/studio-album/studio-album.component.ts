@@ -20,6 +20,7 @@ export class StudioAlbumComponent {
   subCategory: any;
   isFullScreen: boolean = false;
   userData: any;
+  permissionObject: any;
 
   constructor(
     private service: SharedService,
@@ -31,8 +32,21 @@ export class StudioAlbumComponent {
       this.paramId = params['id']
     });
 
-    const userData: any = localStorage.getItem('userData')
-    this.userData = JSON.parse(userData)
+    const userDataString: any = localStorage.getItem('userData');
+
+    if (userDataString) {
+      try {
+        this.userData = JSON.parse(userDataString);
+        if (this.userData.permission) {
+          const parsedPermissions = JSON.parse(this.userData.permission);
+          this.permissionObject = parsedPermissions.reduce((acc: any, curr: any) => {
+            return { ...acc, ...curr };
+          }, {});
+        }
+      } catch (error) {
+        console.error('Error parsing userData or permission', error);
+      }
+    }
   }
 
   ngOnInit() {

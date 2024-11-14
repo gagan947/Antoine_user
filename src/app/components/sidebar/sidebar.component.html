@@ -2,23 +2,33 @@
       <div class="accordion" id="accordionPanelsStayOpenExample">
             @for (item of data; track $index) {
             <div class="accordion-item">
-                  <h2 class="accordion-header" [id]="'panelsStayOpen-heading_'+item.id">
-                        <button class="accordion-button" [ngClass]="{'collapsed': $index !== 0}" type="button"
-                              data-bs-toggle="collapse" [attr.data-bs-target]="'#'+item?.id" aria-expanded="true"
+                  <!-- Always show the category name -->
+                  <h2 class="accordion-header" [id]="'panelsStayOpen-heading_'+item.id"
+                        [ngClass]="{'no-subcategory': !hasValidSubcategories(item)}">
+                        <button *ngIf="hasValidSubcategories(item)" class="accordion-button"
+                              [ngClass]="{'collapsed': $index !== 0}" type="button" data-bs-toggle="collapse"
+                              [attr.data-bs-target]="'#'+item?.id" aria-expanded="true"
                               [attr.aria-controls]="'panelsStayOpen-collapse_'+item.id">
                               {{item.category_name | uppercase}}
                         </button>
+
+                        <!-- When there are no subcategories, make the button a router link -->
+                        <button *ngIf="!hasValidSubcategories(item)" class="accordion-button"
+                              [routerLink]="['/sub-album']" [queryParams]="{cat_id: item.id}">
+                              {{item.category_name | uppercase}}
+                        </button>
                   </h2>
-                  <div [id]="item?.id" class="accordion-collapse collapse" [ngClass]="$index == 0 ? 'show':''"
-                        [attr.aria-labelledby]="'panelsStayOpen-heading_'+item.id">
+
+                  <!-- Only show the accordion collapse and subcategories if there are valid subcategories -->
+                  <div *ngIf="hasValidSubcategories(item)" [id]="item?.id" class="accordion-collapse collapse"
+                        [ngClass]="$index == 0 ? 'show':''" [attr.aria-labelledby]="'panelsStayOpen-heading_'+item.id">
                         <div class="accordion-body">
                               <ul class="ct_filter_side_links">
                                     @for (item2 of item.findImageSubcategory; track $index) {
-                                    <li>
+                                    <li *ngIf="item2.subcategory_name">
                                           <a routerLink="/sub-album"
                                                 [queryParams]="{cat_id : item2?.category_id, id : item2?.id}">•
-                                                {{item2.subcategory_name | uppercase}}
-                                                [{{item2.count}}]
+                                                {{item2.subcategory_name | uppercase}} [{{item2.count}}]
                                           </a>
                                     </li>
                                     }

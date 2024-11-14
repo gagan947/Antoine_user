@@ -8,7 +8,8 @@
                               <form [formGroup]="signUpForm" (ngSubmit)="onSubmit(signUpForm)">
                                     <div class="form-group mb-3">
                                           <label for="" class="mb-2 text-white">Name</label>
-                                          <input type="text" formControlName="name" class="ct_input form-control">
+                                          <input type="text" formControlName="name" class="ct_input form-control"
+                                                placeholder="Enter Your Name">
                                           <p *ngIf="
                                           signUpForm.controls['name'].errors &&
                                           signUpForm.controls['name'].touched
@@ -23,7 +24,8 @@
                                     </div>
                                     <div class="form-group mb-3">
                                           <label for="" class="mb-2 text-white">Email</label>
-                                          <input type="text" formControlName="email" class="ct_input form-control">
+                                          <input type="text" formControlName="email" class="ct_input form-control"
+                                                placeholder="Enter Your Email">
                                           <p *ngIf="
                                           signUpForm.controls['email'].errors &&
                                           signUpForm.controls['email'].touched
@@ -39,7 +41,7 @@
                                     <div class="form-group mb-3">
                                           <label for="" class="mb-2 text-white">Phone</label>
                                           <ngx-intl-tel-input [cssClass]="'ct_input form-control full_width ps-5'"
-                                                [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                                                [enableAutoCountrySelect]="false" [enablePlaceholder]="true"
                                                 [searchCountryFlag]="true"
                                                 [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                                 [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India"
@@ -61,7 +63,8 @@
                                           <label for="" class="mb-2 text-white">Password</label>
                                           <div class="position-relative">
                                                 <input [type]="showPassword ? 'text':'password'"
-                                                      formControlName="password" class="ct_input form-control">
+                                                      placeholder="Create Password" formControlName="password"
+                                                      class="ct_input form-control">
                                                 <i [ngClass]="showPassword ? 'fa-eye':'fa-eye-slash'"
                                                       (click)="showPassword = !showPassword"
                                                       class="fa-solid ct_eye_show"></i>

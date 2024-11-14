@@ -100,3 +100,17 @@
   white-space: nowrap;
   flex-wrap: wrap;
 }
+
+.close_btn {
+  position: absolute;
+  top: 0px;
+  right: 0;
+  color: #df3522;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.w-fit {
+  width: fit-content;
+}

@@ -15,15 +15,15 @@
                                                             routerLink="/archives">Home</a></h4>
                                           </a>
                                     </li>
-                                    <li *ngIf="subCategory?.subcategory_name">
+                                    <li *ngIf="category?.category_name">
                                           /
                                     </li>
-                                    <li *ngIf="subCategory?.subcategory_name">
+                                    <li>
                                           <a class="text-white" routerLink="/sub-categories"
                                                 [queryParams]="{id : category?.id}">{{category?.category_name
                                                 }}</a>
                                     </li>
-                                    <li>
+                                    <li *ngIf="subCategory?.subcategory_name">
                                           /
                                     </li>
                                     <li>
