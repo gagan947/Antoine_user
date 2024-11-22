@@ -12,8 +12,7 @@
                                     <div class="col-md-11 mx-auto ">
                                           <div class="ct_search_messanory_grid ct_random_photo_grid">
                                                 @for (item of data; track $index) {
-                                                <a routerLink="/studio-album" [queryParams]="{id : item?.id}"
-                                                      class="ct_search_img d-block">
+                                                <a (click)="openDialog(item?.id)" class="ct_search_img d-block">
                                                       <img [src]="item.image" alt="">
                                                 </a>
                                                 }

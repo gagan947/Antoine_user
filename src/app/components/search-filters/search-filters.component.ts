@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { Router } from '@angular/router';
+import { DialogService } from '../../services/DialogService';
+import { StudioAlbumComponent } from '../studio-album/studio-album.component';
 
 @Component({
   selector: 'app-search-filters',
@@ -12,8 +14,8 @@ export class SearchFiltersComponent {
   data: any;
   imgData: any;
   searchQuery: string = '';
-  searchMode: string = '';
-  tagSearchMode: string = '';
+  searchMode: string = 'OR';
+  tagSearchMode: string = 'AND';
   searchOptions = {
     photo_title: false,
     file_name: false,
@@ -32,7 +34,8 @@ export class SearchFiltersComponent {
 
   constructor(
     private service: SharedService,
-    private router: Router
+    private router: Router,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -256,6 +259,12 @@ export class SearchFiltersComponent {
     const dropdowns = document.querySelectorAll('.position-relative.ct_drop_show');
     dropdowns.forEach((dropdown: Element) => {
       (dropdown as HTMLElement).classList.remove('ct_drop_show');
+    });
+  }
+
+  openDialog(id: any): void {
+    this.dialogService.open(StudioAlbumComponent, {
+      paramId: id
     });
   }
 

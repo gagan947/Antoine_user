@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -12,9 +12,11 @@ import { HttpClient } from '@angular/common/http';
 
 export class StudioAlbumComponent {
   @ViewChild('fullScreenContainer') fullScreenContainer!: ElementRef;
+  @Output() closed = new EventEmitter<void>();
+  @Input() paramId: any
+
   loading: boolean = false;
   data: any;
-  paramId: any;
   cat_id: any;
   category: any;
   subCategory: any;
@@ -28,10 +30,9 @@ export class StudioAlbumComponent {
     private route: ActivatedRoute,
     private httpClient: HttpClient
   ) {
-    this.route.queryParams.subscribe((params) => {
-      this.paramId = params['id']
-    });
-
+    // this.route.queryParams.subscribe((params) => {
+    //   this.paramId = params['id']
+    // });
     const userDataString: any = localStorage.getItem('userData');
 
     if (userDataString) {
@@ -61,10 +62,8 @@ export class StudioAlbumComponent {
         this.data = res.imageData.findImageProfile[0]
         this.category = res.imageData.category
         this.subCategory = res.imageData.subcategory
-        this.loading = false
-      } else {
-        this.loading = false
       }
+      this.loading = false
     })
   }
 
@@ -213,5 +212,9 @@ export class StudioAlbumComponent {
 
   stopDragging(): void {
     this.isDragging = false;
+  }
+
+  closeDialog(): void {
+    this.closed.emit();
   }
 }

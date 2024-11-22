@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DialogService } from '../../services/DialogService';
+import { StudioAlbumComponent } from '../studio-album/studio-album.component';
 
 @Component({
   selector: 'app-sub-album',
@@ -20,7 +22,8 @@ export class SubAlbumComponent {
   constructor(
     private service: SharedService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialogService: DialogService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramId = params['id'] ? params['id'] : undefined
@@ -54,5 +57,11 @@ export class SubAlbumComponent {
         this.loading = false
       }
     })
+  }
+
+  openDialog(id: any): void {
+    this.dialogService.open(StudioAlbumComponent, {
+      paramId: id
+    });
   }
 }

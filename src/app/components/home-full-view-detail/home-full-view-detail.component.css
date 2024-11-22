@@ -1,0 +1,129 @@
+.image-preview-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: auto;
+}
+
+img {
+      display: block;
+      width: 100%;
+}
+
+.ct_overflow_hidden {
+      overflow: hidden;
+}
+
+.ct_owl_carousel_option li svg {
+      cursor: pointer;
+}
+
+.copy-message {
+      color: #fff;
+      position: fixed;
+      left: 30%;
+      top: 5%;
+}
+
+.image {
+      transition: transform 0.3s ease;
+}
+
+.zoom-controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+}
+
+.zoom-controls button {
+      margin: 0 5px;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+}
+
+.zoom-controls button:hover {
+      background-color: #45a049;
+}
+
+.nav-btn {
+      background: transparent;
+      color: #fff;
+      border: none;
+      font-size: 23px;
+}
+
+.nav-btn:disabled {
+      color: #c1c1c1;
+      opacity: 0.5;
+}
+
+.btn_div {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      right: 0;
+      padding-inline: 30px;
+}
+
+.ct_studio_img_456 {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+}
+
+.ct_studio_img_456:active {
+      cursor: grabbing;
+}
+
+.ct_studio_img_456 img {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      transition: transform 0.1s ease;
+}
+
+
+.dialog-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+}
+
+.dialog-content {
+      background: #151515;
+      /* padding: 20px; */
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+      height: 665px;
+      overflow-y: scroll;
+}
+
+.close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+}
+
+.ct_studio_close_btn {
+      cursor: pointer;
+}

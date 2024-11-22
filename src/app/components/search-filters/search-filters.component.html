@@ -116,7 +116,7 @@
                                                             </div>
 
                                                       </li>
-                                                      <li [ngClass]="{'active':selectedItems.length > 0 || tagSearchMode}"
+                                                      <li [ngClass]="{'active':selectedItems.length > 0}"
                                                             class="position-relative">
                                                             <div class="ct_filters_btn">
                                                                   <i class="bi bi-tag"></i>
@@ -459,7 +459,7 @@
                                           <ng-container *ngIf="imgData?.length > 0; else default2">
                                                 @for (item of imgData; track $index) {
                                                 <div class="col-lg-4 col-md-6 mb-5">
-                                                      <a routerLink="/studio-album" [queryParams]="{id : item?.id}"
+                                                      <a (click)="openDialog(item?.id)"
                                                             class="ct_album_img ct_light_box_width_348">
                                                             <img [src]="item.image" alt="">
                                                             <p>{{item.image_name}}</p>

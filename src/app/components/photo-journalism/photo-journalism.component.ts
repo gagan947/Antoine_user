@@ -1,6 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DialogService } from '../../services/DialogService';
+import { HomeFullViewDetailComponent } from '../home-full-view-detail/home-full-view-detail.component';
 
 @Component({
   selector: 'app-photo-journalism',
@@ -18,7 +20,8 @@ export class PhotoJournalismComponent {
   constructor(
     private service: SharedService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialogService: DialogService
   ) {
   }
 
@@ -84,4 +87,14 @@ export class PhotoJournalismComponent {
     this.offset = 0
     this.getImages()
   }
+
+  openDialog(data: any, img_id: any): void {
+    this.dialogService.open(HomeFullViewDetailComponent, {
+      dialogData: {
+        id: img_id,
+        data: data
+      }
+    });
+  }
+
 }

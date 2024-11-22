@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { Router } from '@angular/router';
+import { DialogService } from '../../services/DialogService';
+import { StudioAlbumComponent } from '../studio-album/studio-album.component';
 
 @Component({
   selector: 'app-random-photos',
@@ -12,7 +14,8 @@ export class RandomPhotosComponent {
   data: any;
   constructor(
     private service: SharedService,
-    private router: Router
+    private router: Router,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -30,5 +33,11 @@ export class RandomPhotosComponent {
         this.loading = false
       }
     })
+  }
+
+  openDialog(id: any): void {
+    this.dialogService.open(StudioAlbumComponent, {
+      paramId: id
+    });
   }
 }

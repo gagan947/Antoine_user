@@ -36,7 +36,7 @@
                                           @for (item of data; track $index) {
                                           <div class="col-lg-4 col-md-6 mb-5">
                                                 <div class="ct_album_card">
-                                                      <a routerLink="/studio-album" [queryParams]="{id : item?.id}">
+                                                      <a (click)="openDialog(item.id)">
                                                             <figure>
                                                                   <div class="ct_album_img">
                                                                         <img [src]="item?.image" alt="">
