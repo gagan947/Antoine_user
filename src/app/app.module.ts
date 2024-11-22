@@ -36,6 +36,7 @@ import { MyAlbumComponent } from './components/my-album/my-album.component';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { NewsRecentPostComponent } from './components/news-recent-post/news-recent-post.component';
 import { AddMyAlbumComponent } from './components/add-my-album/add-my-album.component';
+import { SubSubalbumComponent } from './components/sub-subalbum/sub-subalbum.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { AddMyAlbumComponent } from './components/add-my-album/add-my-album.comp
     NewsDetailComponent,
     NewsRecentPostComponent,
     AddMyAlbumComponent,
+    SubSubalbumComponent,
   ],
   imports: [
     BrowserModule,

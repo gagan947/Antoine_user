@@ -1,3 +1,7 @@
 .accordion-header.no-subcategory .accordion-button::after {
       display: none;
 }
+
+.accordion.no-subcategory .accordion-button::after {
+      display: none;
+}

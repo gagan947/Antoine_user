@@ -59,7 +59,7 @@ export class StudioAlbumComponent {
     let apiUrl = `image/image-profile?id=${this.paramId}`
     this.service.get(apiUrl).subscribe(res => {
       if (res.success) {
-        this.data = res.imageData.findImageProfile[0]
+        this.data = res.imageData.findImageProfile
         this.category = res.imageData.category
         this.subCategory = res.imageData.subcategory
       }
@@ -216,5 +216,21 @@ export class StudioAlbumComponent {
 
   closeDialog(): void {
     this.closed.emit();
+  }
+
+  getUniqueSubAlbums(subAlbums: any[]) {
+    const uniqueAlbums = subAlbums.reduce((acc, current) => {
+      const exists = acc.find(
+        (item: any) =>
+          item.category_id === current.category_id &&
+          item.subcategory_id === current.subcategory_id &&
+          item.sub_sub_categoryName === current.sub_sub_categoryName
+      );
+      if (!exists) {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
+    return uniqueAlbums;
   }
 }

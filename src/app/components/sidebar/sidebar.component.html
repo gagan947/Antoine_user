@@ -9,13 +9,13 @@
                               [ngClass]="{'collapsed': $index !== 0}" type="button" data-bs-toggle="collapse"
                               [attr.data-bs-target]="'#'+item?.id" aria-expanded="true"
                               [attr.aria-controls]="'panelsStayOpen-collapse_'+item.id">
-                              {{item.category_name | uppercase}}
+                              {{item.category_name | uppercase}} [{{item.count}}]
                         </button>
 
                         <!-- When there are no subcategories, make the button a router link -->
                         <button *ngIf="!hasValidSubcategories(item)" class="accordion-button"
                               [routerLink]="['/sub-album']" [queryParams]="{cat_id: item.id}">
-                              {{item.category_name | uppercase}}
+                              {{item.category_name | uppercase}} [{{item.count}}]
                         </button>
                   </h2>
 
@@ -23,16 +23,50 @@
                   <div *ngIf="hasValidSubcategories(item)" [id]="item?.id" class="accordion-collapse collapse"
                         [ngClass]="$index == 0 ? 'show':''" [attr.aria-labelledby]="'panelsStayOpen-heading_'+item.id">
                         <div class="accordion-body">
-                              <ul class="ct_filter_side_links">
-                                    @for (item2 of item.findImageSubcategory; track $index) {
-                                    <li *ngIf="item2.subcategory_name">
-                                          <a routerLink="/sub-album"
-                                                [queryParams]="{cat_id : item2?.category_id, id : item2?.id}">•
-                                                {{item2.subcategory_name | uppercase}} [{{item2.count}}]
-                                          </a>
-                                    </li>
+                              <div class="accordion" [id]="'subAccordion_' + item.id">
+                                    @for (item2 of getUniqueSubAlbums(item.findImageSubcategory); track $index) {
+                                    <div class="accordion-item">
+                                          <h2 class="accordion-header"
+                                                [ngClass]="{'no-subcategory': !hasValidSubSubcategories(item2)}"
+                                                [id]="'subHeading_' + item2.subcategory_id">
+                                                <button *ngIf="item2.subSubCategoryData?.length > 0"
+                                                      class="accordion-button collapsed" type="button"
+                                                      data-bs-toggle="collapse"
+                                                      [attr.data-bs-target]="'#subCollapse_' + item2.subcategory_id"
+                                                      [attr.aria-controls]="'subCollapse_' + item2.subcategory_id">
+                                                      {{item2.subcategory_name | uppercase}} [{{item2.count}}]
+                                                </button>
+
+                                                <button *ngIf="!item2.subSubCategoryData?.length"
+                                                      class="accordion-button" [routerLink]="['/sub-album']"
+                                                      [queryParams]="{cat_id: item2?.category_id, id: item2?.subcategory_id}">
+                                                      {{item2.subcategory_name | uppercase}} [{{item2.count}}]
+                                                </button>
+                                          </h2>
+
+                                          <div *ngIf="item2.subSubCategoryData?.length > 0"
+                                                [id]="'subCollapse_' + item2.subcategory_id"
+                                                class="accordion-collapse collapse"
+                                                [attr.aria-labelledby]="'subHeading_' + item2.subcategory_id">
+                                                <div class="accordion-body">
+                                                      <ul class="ct_filter_side_links">
+                                                            @for (subSub of item2.subSubCategoryData; track $index) {
+                                                            <li>
+                                                                  <a routerLink="/sub-album" [queryParams]="{
+                                          cat_id: item2?.category_id,
+                                          subcat_id: item2?.subcategory_id,
+                                          subsubcat_id: subSub.subSubCategoryId
+                                        }">
+                                                                        - {{subSub.subSubCategoryName | uppercase}}
+                                                                  </a>
+                                                            </li>
+                                                            }
+                                                      </ul>
+                                                </div>
+                                          </div>
+                                    </div>
                                     }
-                              </ul>
+                              </div>
                         </div>
                   </div>
             </div>

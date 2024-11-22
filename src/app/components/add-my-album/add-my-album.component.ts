@@ -56,18 +56,31 @@ export class AddMyAlbumComponent {
   }
 
   onSubmit(form: any) {
-    this.loading = true
     form.markAllAsTouched()
     if (form.invalid) {
       return
     }
-
-    const tags: any = this.selectedItems.map(item => item.id)
-
+    this.loading = true
     const categories: any = this.selectedCatItems.map(item => ({
       "category_id": item.categoryId,
-      "subcategory_id": item.subcategoryId
+      "subcategory_id": item.subcategoryId ? item.subcategoryId : null,
+      "subsubcategoryid": item.subSubcategoryId ? item.subSubcategoryId : null
     }));
+
+    const tags = this.selectedItems.reduce(
+      (result: { tag_id: string; subtag_id: string }, item: any) => {
+        result.tag_id += `${item.id},`;
+
+        if (item.subtag_id && item.subtag_id.length) {
+          result.subtag_id += `${item.subtag_id.join(',')},`;
+        }
+
+        return result;
+      },
+      { tag_id: "", subtag_id: "" }
+    );
+    tags.tag_id = tags.tag_id.replace(/,$/, '');
+    tags.subtag_id = tags.subtag_id.replace(/,$/, '');
 
     let apiUrl = ''
     let formData = new FormData()
@@ -76,13 +89,13 @@ export class AddMyAlbumComponent {
       formData.append('category', JSON.stringify(categories))
       formData.append('file', this.uploadImg)
       formData.append('id', this.paramId)
-      formData.append('tag_id', tags)
+      formData.append('tags', JSON.stringify(tags))
     } else {
       apiUrl = `image/create`
       formData.append('category', JSON.stringify(categories))
       formData.append('file', this.uploadImg)
-      formData.append('tag_id', tags)
-      formData.append('collaburate_status', "0")
+      formData.append('tags', JSON.stringify(tags))
+      formData.append('collaburate_status', '2')
     }
 
     this.service.upload(apiUrl, formData).subscribe(res => {
@@ -108,32 +121,109 @@ export class AddMyAlbumComponent {
     let apiurl = `image/image-profile?id=${this.paramId}`
     this.service.get(apiurl).subscribe(res => {
       if (res.success) {
-        const data = res.imageData.findImageProfile[0]
-        this.selectedItems = [...data.tags]
+        const data = res.imageData.findImageProfile
         data.sub_album.forEach((album: any) => {
           this.filteredCatOptions.forEach(category => {
             if (category.id == album.category_id) {
               category.subcategoryData.forEach((subcategory: any) => {
+                subcategory.disabled = true;
                 if (subcategory.id == album.subcategory_id) {
+                  // Ensure category and subcategory are marked selected
+                  subcategory.disabled = false;
                   subcategory.selected = true;
-                  category.selected = true
-                  const existingItem = this.selectedCatItems.find(item =>
-                    item.categoryId == category.id && item.subcategoryId == subcategory.id
-                  );
+                  category.selected = true;
 
-                  if (!existingItem) {
-                    this.selectedCatItems.push({
-                      categoryId: category.id,
-                      subcategoryId: subcategory.id,
-                      categoryName: category.category_name,
-                      subcategoryName: subcategory.subcategory_name,
-                      selected: true
-                    });
+                  // Handle subSubCategory data if present
+                  subcategory.sub_sub_category_data?.forEach((subSubcategory: any) => {
+                    subSubcategory.disabled = true
+                    if (subSubcategory.id == album.subsubcategoryid) {
+                      subSubcategory.selected = true;
+                      subSubcategory.disabled = false
+                      // Check if the item already exists in selectedCatItems
+                      const existingItem = this.selectedCatItems.find(item =>
+                        item.categoryId == category.id &&
+                        item.subcategoryId == subcategory.id &&
+                        item.subSubcategoryId == subSubcategory.id
+                      );
+
+                      if (!existingItem) {
+                        this.selectedCatItems.push({
+                          categoryId: category.id,
+                          subcategoryId: subcategory.id,
+                          subSubcategoryId: subSubcategory.id,
+                          categoryName: category.category_name,
+                          subcategoryName: subcategory.subcategory_name,
+                          subSubCategoryName: subSubcategory.sub_sub_categoryName,
+                          selected: true
+                        });
+                      }
+                    }
+                  });
+
+                  // Handle case where only subcategory is selected
+                  if (!album.subsubcategoryid) {
+                    const existingItem = this.selectedCatItems.find(item =>
+                      item.categoryId == category.id &&
+                      item.subcategoryId == subcategory.id
+                    );
+
+                    if (!existingItem) {
+                      this.selectedCatItems.push({
+                        categoryId: category.id,
+                        subcategoryId: subcategory.id,
+                        subsubcategoryId: null,
+                        categoryName: category.category_name,
+                        subcategoryName: subcategory.subcategory_name,
+                        subSubCategoryName: null,
+                        selected: true
+                      });
+                    }
                   }
                 }
               });
             }
           });
+        });
+
+        data.tags.forEach((tagItem: { tagId: any; tagName: string; subTags: { subTagId: any; subTagName: string }[] }) => {
+          const matchingTag = this.filteredOptions.find(option => option.id === tagItem.tagId);
+
+          if (matchingTag) {
+            // Mark the tag as selected
+            matchingTag.selected = true;
+
+            if (matchingTag.subTagData) {
+              tagItem.subTags.forEach(subTagItem => {
+                const matchingSubTag = matchingTag.subTagData.find((subTag: { subTagId: any; }) => subTag.subTagId === subTagItem.subTagId);
+                if (matchingSubTag) {
+                  matchingSubTag.selected = true;
+                }
+              });
+            }
+
+            // Check if the tag already exists in selectedItems
+            const existingTag = this.selectedItems.find(selected => selected.id === tagItem.tagId);
+
+            if (existingTag) {
+              // Add the subTags to the existing entry
+              tagItem.subTags.forEach(subTagItem => {
+                if (!existingTag.subtag_id.includes(subTagItem.subTagId)) {
+                  existingTag.subtag_id.push(subTagItem.subTagId);
+                }
+                if (!existingTag.subTagName.includes(subTagItem.subTagName)) {
+                  existingTag.subTagName.push(subTagItem.subTagName);
+                }
+              });
+            } else {
+              // Create a new entry for the tag and subTags
+              this.selectedItems.push({
+                id: tagItem.tagId,
+                tag: tagItem.tagName,
+                subtag_id: tagItem.subTags.map(subTag => subTag.subTagId),
+                subTagName: tagItem.subTags.map(subTag => subTag.subTagName),
+              });
+            }
+          }
         });
 
 
@@ -191,8 +281,13 @@ export class AddMyAlbumComponent {
 
   filterOptions() {
     if (this.searchTerm) {
-      this.filteredOptions = this.tagData.filter((item: { tag: string; }) =>
-        item.tag.toLowerCase().includes(this.searchTerm.toLowerCase())
+      const search = this.searchTerm.toLowerCase();
+      this.filteredOptions = this.tagData.filter(
+        (item: any) =>
+          item.tag.toLowerCase().includes(search) ||
+          item.subTagData?.some((sub: any) =>
+            sub.sub_tagName.toLowerCase().includes(search)
+          )
       );
     } else {
       this.filteredOptions = [...this.tagData];
@@ -201,92 +296,232 @@ export class AddMyAlbumComponent {
 
   filterCatOptions() {
     if (this.searchCatTerm) {
-      this.filteredCatOptions = this.data.filter((item: any) =>
-        item.category_name.toLowerCase().includes(this.searchCatTerm.toLowerCase())
-      );
+      const searchTerm = this.searchCatTerm.toLowerCase();
+      this.filteredCatOptions = this.data.filter((item: any) => {
+        const matchesCategory = item.category_name.toLowerCase().includes(searchTerm);
+        const matchesSubcategory = item.subcategoryData?.some((sub: any) =>
+          sub.subcategory_name.toLowerCase().includes(searchTerm)
+        );
+        const matchesSubSubcategory = item.subcategoryData?.some((sub: any) =>
+          sub.sub_sub_category_data?.some((subSub: any) =>
+            subSub.sub_sub_categoryName.toLowerCase().includes(searchTerm)
+          )
+        );
+        return matchesCategory || matchesSubcategory || matchesSubSubcategory;
+      });
     } else {
       this.filteredCatOptions = [...this.data];
     }
   }
 
-  selectItem(option: string) {
-    if (!this.selectedItems.includes(option)) {
-      this.selectedItems.push(option);
+  onTagChange(tag: any, event: any) {
+    tag.selected = event.target.checked;
+    if (tag.selected) {
+      const existingTag = this.selectedItems.find((item) => item.id === tag.id);
+      if (!existingTag) {
+        this.selectedItems.push({ id: tag.id, tag: tag.tag, subTagName: null });
+      }
+    } else {
+      this.selectedItems = this.selectedItems.filter((item) => item.id !== tag.id);
+      tag.subTagData?.forEach((subTag: any) => {
+        subTag.selected = false;
+      });
     }
-    this.searchTerm = '';
-    this.filterOptions();
   }
 
-  removeItem(option: string) {
-    this.selectedItems = this.selectedItems.filter(item => item !== option);
+  onSubTagChange(tag: any, subTag: any, event: any) {
+    subTag.selected = event.target.checked;
+    // Find if the tag is already in selectedItems
+    let existingTag = this.selectedItems.find(item => item.id === tag.id);
+
+    if (subTag.selected) {
+      // If the tag is not in selectedItems, add it
+      if (!existingTag) {
+        this.selectedItems.push({
+          id: tag.id,
+          tag: tag.tag,
+          subtag_id: [subTag.subTagId],
+          subTagName: [subTag.sub_tagName]
+        });
+      } else {
+        // If the tag is already in selectedItems, add the subTag ID and name to the subtag arrays
+        if (!existingTag.subtag_id.includes(subTag.subTagId)) {
+          existingTag.subtag_id.push(subTag.subTagId);
+          existingTag.subTagName.push(subTag.sub_tagName);
+        }
+      }
+    } else {
+      // If the subTag is deselected, remove the subTag subTagId and name from the arrays
+      if (existingTag) {
+        const subTagIndex = existingTag.subtag_id.indexOf(subTag.subTagId);
+        if (subTagIndex !== -1) {
+          existingTag.subtag_id.splice(subTagIndex, 1);
+          existingTag.subTagName.splice(subTagIndex, 1);
+        }
+
+        // If no subTags remain selected for this tag, remove the tag from selectedItems
+        if (existingTag.subtag_id.length === 0) {
+          this.selectedItems = this.selectedItems.filter(item => item.id !== tag.id);
+        }
+      }
+    }
+    tag.selected = tag.subTagData.some((sub: any) => sub.selected);
   }
 
 
-  onCategoryChange(category: any, event: any) {
+  removeItem(item: any) {
+    this.selectedItems = this.selectedItems.filter((selected) => selected !== item);
+    const tag = this.tagData.find((t: any) => t.id === item.id);
+    if (tag) {
+      tag.selected = false;
+      if (item.subTagName) {
+        const subTag = tag.subTagData?.find((sub: any) => sub.sub_tagName === item.subTagName);
+        if (subTag) {
+          subTag.selected = false;
+        }
+      } else {
+        tag.subTagData?.forEach((sub: any) => {
+          sub.selected = false;
+        });
+      }
+    }
+  }
+
+
+  onCategoryChange(category: any, event: any): void {
     category.selected = event.target.checked;
-
     if (category.selected) {
-      const existingCategory = this.selectedCatItems.find(item => item.categoryId === category.id && item.subcategoryId === null);
-
-      if (!existingCategory) {
-        this.selectedCatItems.push({
+      this.selectedCatItems.push(
+        {
           categoryId: category.id,
           subcategoryId: null,
           categoryName: category.category_name,
-          subcategoryName: null
-        });
-      }
-    } else {
-      this.selectedCatItems = this.selectedCatItems.filter(item => item.categoryId !== category.id);
-      category.subcategoryData.forEach((sub: any) => {
+          subcategoryName: null,
+        },
+      );
+
+      category.subcategoryData?.forEach((sub: any) => {
         sub.selected = false;
+        sub.disabled = false;
+
+        sub.sub_sub_category_data?.forEach((subSub: any) => {
+          subSub.selected = false;
+          subSub.disabled = false;
+        });
+      });
+    } else {
+      this.selectedCatItems = this.selectedCatItems.filter(
+        (item) => item.categoryId !== category.id
+      );
+
+      category.subcategoryData?.forEach((sub: any) => {
+        sub.selected = false;
+        sub.disabled = false;
+
+        sub.sub_sub_category_data?.forEach((subSub: any) => {
+          subSub.selected = false;
+          subSub.disabled = false;
+        });
+      });
+    }
+  }
+
+  onSubcategoryChange(category: any, subcategory: any, event: any): void {
+    subcategory.selected = event.target.checked;
+
+    if (subcategory.selected) {
+      category.selected = true;
+
+      this.selectedCatItems.push(
+        {
+          categoryId: category.id,
+          subcategoryId: subcategory.id,
+          categoryName: category.category_name,
+          subcategoryName: subcategory.subcategory_name,
+        },
+      );
+
+      category.subcategoryData?.forEach((sub: any) => {
+        sub.disabled = sub !== subcategory;
+
+        sub.sub_sub_category_data?.forEach((subSub: any) => {
+          subSub.selected = false;
+          subSub.disabled = sub !== subcategory;
+        });
+      });
+    } else {
+      this.selectedCatItems = this.selectedCatItems.filter(
+        (item) => item.subcategoryId !== subcategory.id
+      );
+
+      const anySelected = category.subcategoryData?.some((sub: any) => sub.selected);
+      if (!anySelected) {
+        category.selected = false;
+      }
+
+      category.subcategoryData?.forEach((sub: any) => {
         sub.disabled = false;
       });
     }
   }
 
-  onSubcategoryChange(category: any, subcategory: any, event: any) {
-    subcategory.selected = event.target.checked;
-    category.selected = event.target.checked;
+  onSubSubcategoryChange(
+    category: any,
+    subcategory: any,
+    subsubcategory: any,
+    event: any
+  ): void {
+    subsubcategory.selected = event.target.checked;
 
-    if (subcategory.selected) {
-      const existingCategoryIndex = this.selectedCatItems.findIndex(item => item.categoryId === category.id && item.subcategoryId === null);
+    if (subsubcategory.selected) {
+      category.selected = true;
+      subcategory.selected = true;
 
-      if (existingCategoryIndex !== -1) {
-        this.selectedCatItems[existingCategoryIndex] = {
+      this.selectedCatItems.push(
+        {
           categoryId: category.id,
           subcategoryId: subcategory.id,
+          subSubcategoryId: subsubcategory.id,
           categoryName: category.category_name,
-          subcategoryName: subcategory.subcategory_name
-        };
-      } else {
-        this.selectedCatItems.push({
-          categoryId: category.id,
-          subcategoryId: subcategory.id,
-          categoryName: category.category_name,
-          subcategoryName: subcategory.subcategory_name
+          subcategoryName: subcategory.subcategory_name,
+          subSubCategoryName: subsubcategory.sub_sub_categoryName,
+        },
+      );
+
+      category.subcategoryData?.forEach((sub: any) => {
+        sub.disabled = sub !== subcategory;
+
+        sub.sub_sub_category_data?.forEach((subSub: any) => {
+          subSub.disabled = sub !== subcategory || subSub !== subsubcategory;
         });
-      }
-
-      category.subcategoryData.forEach((sub: any) => {
-        if (sub !== subcategory) {
-          sub.disabled = true;
-        }
       });
     } else {
-      this.selectedCatItems = this.selectedCatItems.filter(item => item.subcategoryId !== subcategory.id);
+      this.selectedCatItems = this.selectedCatItems.filter(
+        (item) => item.subSubCategoryName !== subsubcategory.sub_sub_categoryName
+      );
 
-      const anySelected = category.subcategoryData.some((sub: any) => sub.selected);
+      const anySelected = subcategory.sub_sub_category_data?.some(
+        (subSub: any) => subSub.selected
+      );
       if (!anySelected) {
-        category.subcategoryData.forEach((sub: any) => (sub.disabled = false));
-
-        this.selectedCatItems.push({
-          categoryId: category.id,
-          subcategoryId: null,
-          categoryName: category.category_name,
-          subcategoryName: null
-        });
+        subcategory.selected = false;
       }
+
+      const subcategoriesSelected = category.subcategoryData?.some(
+        (sub: any) => sub.selected
+      );
+      if (!subcategoriesSelected) {
+        category.selected = false;
+      }
+
+      subcategory.sub_sub_category_data?.forEach((subSub: any) => {
+        subSub.disabled = false;
+      });
+
+      category.subcategoryData?.forEach((sub: any) => {
+        sub.disabled = false;
+      });
     }
+    console.log(this.selectedCatItems);
   }
 }

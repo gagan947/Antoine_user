@@ -1,4 +1,4 @@
-<div class="dialog-backdrop" (click)="closeDialog()">
+<div *ngIf="!loading" class="dialog-backdrop" (click)="closeDialog()">
       <div class="dialog-content ct_modal_verticle_h" (click)="$event.stopPropagation()">
             <main #fullScreenContainer class="ct_py_100 pt-5 h-auto position-relative">
                   <div class="container">
@@ -121,20 +121,33 @@
                                                                         <p class="mb-0">{{data?.file}} </p>
                                                                   </li>
                                                                   <li>
-                                                                        <h4>Tags</h4>
-                                                                        <p class="mb-0">
+                                                                        <h4 class="ct_cyan_text">Tags</h4>
+                                                                        <p class="mb-0 text-white">
                                                                               <span
-                                                                                    *ngFor="let tag of data?.tags; let i = index">
-                                                                                    {{tag?.tag}}{{i < data?.tags.length
-                                                                                          - 1 ? ',' : '' }} </span>
+                                                                                    *ngFor="let tag of data.tags; let i = index">
+                                                                                    {{ tag.tagName }}
+                                                                                    <ng-container
+                                                                                          *ngIf="tag.subTags && tag.subTags.length > 0">
+                                                                                          (
+                                                                                          <span
+                                                                                                *ngFor="let subTag of tag.subTags; let j = index">
+                                                                                                {{ subTag.subTagName
+                                                                                                }}{{ j <
+                                                                                                      tag.subTags.length
+                                                                                                      - 1 ? ', ' : '' }}
+                                                                                                      </span>
+                                                                                                      )
+                                                                                    </ng-container>
+                                                                                    {{ i < data.tags.length - 1 ? ','
+                                                                                          : '' }} </span>
                                                                         </p>
                                                                   </li>
                                                                   <li>
                                                                         <h4>Albums</h4>
                                                                         <ul>
-                                                                              @for (item of data?.sub_album; track
-                                                                              $index) {
-                                                                              <li> <a class="text-white"
+                                                                              <li class="mt-1"
+                                                                                    *ngFor="let item of getUniqueSubAlbums(data?.sub_album)">
+                                                                                    <a class="text-white"
                                                                                           routerLink="/sub-categories"
                                                                                           [queryParams]="{id : item?.category_id}">{{item.category_name
                                                                                           | uppercase}}</a>
@@ -146,8 +159,15 @@
                                                                                           routerLink="/sub-album"
                                                                                           [queryParams]="{cat_id : item?.category_id, id : item?.subcategory_id}">{{item.subcategory_name
                                                                                           | uppercase}}</a>
+                                                                                    <ng-container
+                                                                                          *ngIf="item.sub_sub_categoryName">
+                                                                                          /
+                                                                                    </ng-container>
+                                                                                    <a class="text-white"
+                                                                                          routerLink="/sub-subcategories"
+                                                                                          [queryParams]="{cat_id : item?.category_id, id : item?.subsubcategoryid}">{{item.sub_sub_categoryName
+                                                                                          | uppercase}}</a>
                                                                               </li>
-                                                                              }
                                                                         </ul>
                                                                   </li>
                                                             </ul>
@@ -179,6 +199,8 @@
                         </div>
                   </div>
             </main>
-            <div *ngIf="loading" class="ct_loader_main">
-                  <div class="loader"></div>
-            </div>
+      </div>
+</div>
+<div *ngIf="loading" class="ct_loader_main">
+      <div class="loader"></div>
+</div>

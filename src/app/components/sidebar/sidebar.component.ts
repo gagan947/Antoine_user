@@ -35,4 +35,23 @@ export class SidebarComponent {
   hasValidSubcategories(item: any): boolean {
     return item.findImageSubcategory && item.findImageSubcategory.some((sub: any) => sub.subcategory_name);
   }
+
+  hasValidSubSubcategories(subcategory: any): boolean {
+    return subcategory.subSubCategoryData && subcategory.subSubCategoryData.some((subSub: any) => subSub.subSubCategoryName);
+  }
+
+  getUniqueSubAlbums(subAlbums: any[]) {
+    const uniqueAlbums = subAlbums.reduce((acc, current) => {
+      const exists = acc.find(
+        (item: any) =>
+          item.category_id === current.category_id &&
+          item.subcategory_id === current.subcategory_id
+      );
+      if (!exists) {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
+    return uniqueAlbums;
+  }
 }

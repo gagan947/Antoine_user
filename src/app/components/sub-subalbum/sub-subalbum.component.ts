@@ -3,11 +3,11 @@ import { SharedService } from '../../services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-sub-categories',
-  templateUrl: './sub-categories.component.html',
-  styleUrl: './sub-categories.component.css'
+  selector: 'app-sub-subalbum',
+  templateUrl: './sub-subalbum.component.html',
+  styleUrl: './sub-subalbum.component.css'
 })
-export class SubCategoriesComponent {
+export class SubSubalbumComponent {
   loading: boolean = false;
   data: any;
   paramId: any;
@@ -37,20 +37,5 @@ export class SubCategoriesComponent {
         this.loading = false
       }
     })
-  }
-
-  getUniqueSubAlbums(subAlbums: any[]) {
-    const uniqueAlbums = subAlbums.reduce((acc, current) => {
-      const exists = acc.find(
-        (item: any) =>
-          item.category_id === current.category_id &&
-          item.subcategory_id === current.subcategory_id
-      );
-      if (!exists) {
-        acc.push(current);
-      }
-      return acc;
-    }, []);
-    return uniqueAlbums;
   }
 }

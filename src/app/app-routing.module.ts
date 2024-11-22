@@ -24,6 +24,7 @@ import { SubAlbumComponent } from './components/sub-album/sub-album.component';
 import { MyAlbumComponent } from './components/my-album/my-album.component';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { AddMyAlbumComponent } from './components/add-my-album/add-my-album.component';
+import { SubSubalbumComponent } from './components/sub-subalbum/sub-subalbum.component';
 
 const routes: Routes = [
   {
@@ -91,6 +92,9 @@ const routes: Routes = [
   },
   {
     path: 'sub-album', component: SubAlbumComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: 'sub-subcategories', component: SubSubalbumComponent, canActivate: [AuthGuard]
   },
   {
     path: 'my-album', component: MyAlbumComponent, canActivate: [AuthGuard]
