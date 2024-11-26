@@ -25,11 +25,12 @@ export class SearchFiltersComponent {
     album_desc: false
   };
   searchWord: string = ''
-  tags: any;
+  tagData: any;
   selectedPostDate: string = '';
   selectedFileType: string = '';
   searchAlbumQuery: string = ''
   isInSubAlbumSearch: boolean = false;
+  isInsubSubAlbumSearch: boolean = false;
   addedby: any[] = []
 
   constructor(
@@ -82,8 +83,8 @@ export class SearchFiltersComponent {
     let apiUrl = `tag/get-all`
     this.service.get(apiUrl).subscribe(res => {
       if (res.success) {
-        this.tags = res.tagAll
-        this.filteredOptions = [...this.tags]
+        this.tagData = res.tagAll
+        this.filteredOptions = [...this.tagData]
         this.loading = false
       } else {
         this.loading = false
@@ -95,8 +96,24 @@ export class SearchFiltersComponent {
     this.loading = true
     let apiUrl = `image/getfilter-images`
 
+    const tags = this.selectedItems.reduce(
+      (result: { tag_id: string; subtag_id: string }, item: any) => {
+        result.tag_id += `${item.id},`;
+
+        if (item.subtag_id && item.subtag_id.length) {
+          result.subtag_id += `${item.subtag_id.join(',')},`;
+        }
+
+        return result;
+      },
+      { tag_id: "", subtag_id: "" }
+    );
+    tags.tag_id = tags.tag_id.replace(/,$/, '');
+    tags.subtag_id = tags.subtag_id.replace(/,$/, '');
+
     const tagObj = {
-      "tag_search": this.selectedItems.join(',').toString(),
+      "tag_search": tags.tag_id,
+      "sub_tag": tags.subtag_id,
       "all_tag": this.tagSearchMode === 'AND' ? true : false,
       "any_tag": this.tagSearchMode === 'OR' ? true : false,
     }
@@ -110,7 +127,7 @@ export class SearchFiltersComponent {
 
     const albumObj = {
       "album_search": this.searchAlbumQuery,
-      "album_sub": this.isInSubAlbumSearch
+      "album_sub": this.isInSubAlbumSearch,
     }
 
     let formData = new URLSearchParams()
@@ -121,6 +138,9 @@ export class SearchFiltersComponent {
     formData.set("album", JSON.stringify(albumObj))
     formData.set("tag", JSON.stringify(tagObj))
     formData.set("search_words", JSON.stringify(searchWordObj))
+    if (this.isInsubSubAlbumSearch) {
+      formData.set('sub_sub_category', this.searchAlbumQuery)
+    }
 
     this.service.post(apiUrl, formData.toString()).subscribe(res => {
       if (res.success) {
@@ -158,18 +178,98 @@ export class SearchFiltersComponent {
 
   toggleDropdown(open: boolean): void {
     this.dropdownOpen = open;
+    console.log(this.filteredOptions);
+
   }
 
-  selectItem(option: { tag: string }) {
-    if (!this.selectedItems.includes(option)) {
-      this.selectedItems.push(option);
+  filterOptions() {
+    if (this.searchTerm) {
+      const search = this.searchTerm.toLowerCase();
+      this.filteredOptions = this.tagData.filter(
+        (item: any) =>
+          item.tag.toLowerCase().includes(search) ||
+          item.subTagData?.some((sub: any) =>
+            sub.sub_tagName.toLowerCase().includes(search)
+          )
+      );
+    } else {
+      this.filteredOptions = [...this.tagData];
     }
-    this.searchTerm = '';
   }
 
-  removeItem(item: any): void {
-    this.selectedItems = this.selectedItems.filter(selected => selected !== item);
+  onTagChange(tag: any, event: any) {
+    tag.selected = event.target.checked;
+    if (tag.selected) {
+      const existingTag = this.selectedItems.find((item) => item.id === tag.id);
+      if (!existingTag) {
+        this.selectedItems.push({ id: tag.id, tag: tag.tag, subTagName: null });
+      }
+    } else {
+      this.selectedItems = this.selectedItems.filter((item) => item.id !== tag.id);
+      tag.subTagData?.forEach((subTag: any) => {
+        subTag.selected = false;
+      });
+    }
   }
+
+  onSubTagChange(tag: any, subTag: any, event: any) {
+    subTag.selected = event.target.checked;
+    // Find if the tag is already in selectedItems
+    let existingTag = this.selectedItems.find(item => item.id === tag.id);
+
+    if (subTag.selected) {
+      // If the tag is not in selectedItems, add it
+      if (!existingTag) {
+        this.selectedItems.push({
+          id: tag.id,
+          tag: tag.tag,
+          subtag_id: [subTag.subTagId],
+          subTagName: [subTag.sub_tagName]
+        });
+      } else {
+        // If the tag is already in selectedItems, add the subTag ID and name to the subtag arrays
+        if (!existingTag.subtag_id.includes(subTag.subTagId)) {
+          existingTag.subtag_id.push(subTag.subTagId);
+          existingTag.subTagName.push(subTag.sub_tagName);
+        }
+      }
+    } else {
+      // If the subTag is deselected, remove the subTag subTagId and name from the arrays
+      if (existingTag) {
+        const subTagIndex = existingTag.subtag_id.indexOf(subTag.subTagId);
+        if (subTagIndex !== -1) {
+          existingTag.subtag_id.splice(subTagIndex, 1);
+          existingTag.subTagName.splice(subTagIndex, 1);
+        }
+
+        // If no subTags remain selected for this tag, remove the tag from selectedItems
+        if (existingTag.subtag_id.length === 0) {
+          this.selectedItems = this.selectedItems.filter(item => item.id !== tag.id);
+        }
+      }
+    }
+    tag.selected = tag.subTagData.some((sub: any) => sub.selected);
+  }
+
+
+  removeItem(item: any) {
+    this.selectedItems = this.selectedItems.filter((selected) => selected !== item);
+    const tag = this.tagData.find((t: any) => t.id === item.id);
+    if (tag) {
+      tag.selected = false;
+      if (item.subTagName) {
+        const subTag = tag.subTagData?.find((sub: any) => sub.sub_tagName === item.subTagName);
+        if (subTag) {
+          subTag.selected = false;
+        }
+      } else {
+        tag.subTagData?.forEach((sub: any) => {
+          sub.selected = false;
+        });
+      }
+    }
+  }
+
 
   closeDropdown(event: Event): void {
     const clickedOutside = !(event.target as HTMLElement).closest('.multi-select-container');

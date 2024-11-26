@@ -40,7 +40,7 @@ export class SubCategoriesComponent {
   }
 
   getUniqueSubAlbums(subAlbums: any[]) {
-    const uniqueAlbums = subAlbums.reduce((acc, current) => {
+    const uniqueAlbums = subAlbums?.reduce((acc, current) => {
       const exists = acc.find(
         (item: any) =>
           item.category_id === current.category_id &&

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class SidebarComponent {
   loading: boolean = false;
   data: any;
+  tagdata: any[] = [];
   constructor(
     private service: SharedService,
     private router: Router
@@ -17,6 +18,7 @@ export class SidebarComponent {
 
   ngOnInit() {
     this.getCategories()
+    this.getTags()
   }
 
   getCategories() {
@@ -53,5 +55,19 @@ export class SidebarComponent {
       return acc;
     }, []);
     return uniqueAlbums;
+  }
+
+
+  getTags() {
+    this.loading = true
+    let apiUrl = `tag/get-all`
+    this.service.get(apiUrl).subscribe(res => {
+      if (res.success) {
+        this.tagdata = res.tagAll
+        this.loading = false
+      } else {
+        this.loading = false
+      }
+    })
   }
 }

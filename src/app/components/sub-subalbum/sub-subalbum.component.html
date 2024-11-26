@@ -21,19 +21,25 @@
                                     <li>
                                           {{ data?.length > 0 ? data[0].category_name : ''}}
                                     </li>
+                                    <li *ngIf="data?.length > 0">
+                                          /
+                                    </li>
+                                    <li>
+                                          {{ data?.length > 0 ? data[0].subcategory_name : ''}}
+                                    </li>
                               </ul>
                               <div class="row">
                                     @for (item of data; track $index) {
                                     <div class="col-lg-4 col-md-6 mb-5">
                                           <div class="ct_album_card ct_light_black_bg">
                                                 <a routerLink="/sub-album"
-                                                      [queryParams]="{cat_id : item?.category_id, id : item?.id}">
+                                                      [queryParams]="{cat_id : item?.category_id, subcat_id : item?.subcategory_id,subsubcat_id: item?.subsubcategory_id}">
                                                       <figure>
                                                             <div class="ct_album_img">
-                                                                  <img [src]="item?.subcatgeory_image" alt="">
+                                                                  <img [src]="item?.imageUrl" alt="">
                                                             </div>
                                                             <figcaption>
-                                                                  <h4>{{item?.subcategory_name | uppercase}}</h4>
+                                                                  <h4>{{item?.sub_sub_categoryName | uppercase}}</h4>
                                                                   <p class="mb-0">{{item?.count}} {{ item?.count > 1 ?
                                                                         'photos' :
                                                                         'photo' }}</p>

@@ -151,13 +151,19 @@
 
                                                                         <!-- <input type="text" id="ct_word-search" class="ct_input form-control" placeholder="Type in a search term" name="word"> -->
                                                                         <div class="multi-select-container">
-                                                                              <div class="form-control ct_input ct_tags_select_656"
+                                                                              <div class="form-control ct_input tag_input"
                                                                                     (click)="toggleDropdown(true)">
                                                                                     <ng-container
-                                                                                          *ngIf="selectedItems.length > 0 ;else default">
+                                                                                          *ngIf="selectedItems.length > 0; else default">
                                                                                           <span *ngFor="let item of selectedItems"
-                                                                                                class="selected-item ">
-                                                                                                {{ item }}
+                                                                                                class="selected-item">
+                                                                                                {{ item.tag }}
+                                                                                                <ng-container
+                                                                                                      *ngIf="item.subTagName?.length > 0">
+                                                                                                      ({{
+                                                                                                      item.subTagName.join(',')
+                                                                                                      }})
+                                                                                                </ng-container>
                                                                                                 <span class="remove-item"
                                                                                                       (click)="removeItem(item)">x</span>
                                                                                           </span>
@@ -168,15 +174,46 @@
                                                                               </div>
                                                                               <div *ngIf="dropdownOpen"
                                                                                     class="dropdown">
-                                                                                    <ul>
+                                                                                    <input type="text"
+                                                                                          class="ct_input ct_input_search"
+                                                                                          name="tags"
+                                                                                          placeholder="Search..."
+                                                                                          [(ngModel)]="searchTerm"
+                                                                                          (input)="filterOptions()" />
+                                                                                    <ul class="category-item">
                                                                                           <li *ngFor="let option of filteredOptions"
-                                                                                                (click)="selectItem(option.tag)">
-                                                                                                {{ option.tag }}
+                                                                                                class="tag_list">
+                                                                                                <input class="form-check-input"
+                                                                                                      type="checkbox"
+                                                                                                      [id]="option.tag"
+                                                                                                      [checked]="option.selected"
+                                                                                                      (change)="onTagChange(option, $event)" />
+                                                                                                <label
+                                                                                                      [for]="option.tag">{{
+                                                                                                      option.tag
+                                                                                                      }}</label>
+                                                                                                <ul
+                                                                                                      *ngIf="option.subTagData?.length > 0">
+                                                                                                      <li *ngFor="let subTag of option.subTagData"
+                                                                                                            class="sub_category_list">
+                                                                                                            <input class="form-check-input"
+                                                                                                                  type="checkbox"
+                                                                                                                  [id]="subTag.sub_tagName"
+                                                                                                                  [checked]="subTag.selected"
+                                                                                                                  (change)="onSubTagChange(option, subTag, $event)" />
+                                                                                                            <label
+                                                                                                                  [for]="subTag.sub_tagName">{{
+                                                                                                                  subTag.sub_tagName
+                                                                                                                  }}</label>
+                                                                                                      </li>
+                                                                                                </ul>
                                                                                           </li>
-                                                                                          <div *ngIf="filteredOptions?.length == 0 || !filteredOptions"
+                                                                                          <div *ngIf="filteredOptions?.length === 0"
                                                                                                 class="text-center">
-                                                                                                <p class="ct_fs_15">No
-                                                                                                      items found</p>
+                                                                                                <p
+                                                                                                      class="ct_fs_15 text-white">
+                                                                                                      No items found
+                                                                                                </p>
                                                                                           </div>
                                                                                     </ul>
                                                                               </div>
@@ -286,6 +323,15 @@
                                                                                           <label for="sub-albums">Search
                                                                                                 in
                                                                                                 sub-albums</label>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                          <input type="checkbox"
+                                                                                                id="sub-subalbums"
+                                                                                                [(ngModel)]="isInsubSubAlbumSearch"
+                                                                                                name="name2">
+                                                                                          <label for="sub-subalbums">Search
+                                                                                                in
+                                                                                                sub-Subalbums</label>
                                                                                     </li>
                                                                               </ul>
                                                                         </div>

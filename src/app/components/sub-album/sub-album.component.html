@@ -26,9 +26,22 @@
                                     <li *ngIf="subCategory?.subcategory_name">
                                           /
                                     </li>
+                                    <li *ngIf="subCategory?.subcategory_name">
+                                          <a class="text-white" routerLink="/sub-subcategories"
+                                                [queryParams]="{cat_id : category?.id, subcat_id:subCategory?.id}">{{subCategory?.subcategory_name
+                                                }}</a>
+                                    </li>
+                                    <li *ngIf="tag?.tag_name">
+                                          /
+                                    </li>
+                                    <li *ngIf="tag?.tag_name">
+                                          {{tag?.tag_name}}
+                                    </li>
+                                    <li *ngIf="subSubCategory?.sub_subcategory_name">
+                                          /
+                                    </li>
                                     <li>
-                                          {{subCategory?.subcategory_name ? subCategory?.subcategory_name :
-                                          tag?.tag_name}}
+                                          {{subSubCategory?.sub_subcategory_name}}
                                     </li>
                               </ul>
                               <div class="row">

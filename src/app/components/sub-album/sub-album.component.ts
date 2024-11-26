@@ -12,12 +12,14 @@ import { StudioAlbumComponent } from '../studio-album/studio-album.component';
 export class SubAlbumComponent {
   loading: boolean = false;
   data: any;
-  paramId: any;
+  subcat_id: any;
   cat_id: any;
   category: any;
   subCategory: any;
   tag_id: any;
   tag: any;
+  subsubcategory_id: any;
+  subSubCategory: any;
 
   constructor(
     private service: SharedService,
@@ -26,8 +28,9 @@ export class SubAlbumComponent {
     private dialogService: DialogService
   ) {
     this.route.queryParams.subscribe((params) => {
-      this.paramId = params['id'] ? params['id'] : undefined
+      this.subcat_id = params['subcat_id'] ? params['subcat_id'] : undefined
       this.cat_id = params['cat_id'] ? params['cat_id'] : undefined
+      this.subsubcategory_id = params['subsubcat_id'] ? params['subsubcat_id'] : undefined
       this.tag_id = params['tag_id'] ? params['tag_id'] : undefined
       this.getAlbum()
     });
@@ -43,7 +46,7 @@ export class SubAlbumComponent {
     if (this.tag_id) {
       apiUrl = `image/getallimages-bytagid?tag_id=${this.tag_id}`
     } else {
-      apiUrl = `image/getallimages-categorysubcategoryid?category_id=${this.cat_id}&subcategory_id=${this.paramId}`
+      apiUrl = `image/getsubsubCategory-albumbycatgeoryidAndSubCategoryId?category_id=${this.cat_id}&subcategory_id=${this.subcat_id}&subSubCatgeoryId=${this.subsubcategory_id}`
     }
 
     this.service.get(apiUrl).subscribe(res => {
@@ -51,6 +54,7 @@ export class SubAlbumComponent {
         this.data = res.data.findImage ? res.data.findImage : res.data.findAllImage
         this.category = res.data.category
         this.subCategory = res.data.subcategory
+        this.subSubCategory = res.data.subSubCategory
         this.tag = res.data.tag
         this.loading = false
       } else {

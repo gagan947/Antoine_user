@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -51,6 +51,11 @@ export class StudioAlbumComponent {
   }
 
   ngOnInit() {
+    this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.closeDialog()
+      }
+    });
     this.getAlbum()
   }
 

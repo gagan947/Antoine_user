@@ -39,7 +39,7 @@
 
                                                 <button *ngIf="!item2.subSubCategoryData?.length"
                                                       class="accordion-button" [routerLink]="['/sub-album']"
-                                                      [queryParams]="{cat_id: item2?.category_id, id: item2?.subcategory_id}">
+                                                      [queryParams]="{cat_id: item2?.category_id, subcat_id: item2?.subcategory_id}">
                                                       {{item2.subcategory_name | uppercase}} [{{item2.count}}]
                                                 </button>
                                           </h2>
@@ -57,7 +57,7 @@
                                           subcat_id: item2?.subcategory_id,
                                           subsubcat_id: subSub.subSubCategoryId
                                         }">
-                                                                        - {{subSub.subSubCategoryName | uppercase}}
+                                                                        • {{subSub.subSubCategoryName | uppercase}}
                                                                   </a>
                                                             </li>
                                                             }
@@ -71,5 +71,33 @@
                   </div>
             </div>
             }
+      </div>
+
+      <div class="mt-5">
+            <ul class="space-y-4 parent_tag">
+                  <!-- Loop through parent tags -->
+                  <ng-container *ngFor="let item of tagdata | slice:0:20">
+                        <li [ngClass]="{
+                        'full_width': item.subTagData?.length > 0
+                      }">
+                              <!-- Parent Tag -->
+                              <a routerLink="/sub-album" [queryParams]="{ tag_id: item.id }" [ngClass]="{
+                              'hasSubTag': item.subTagData?.length > 0
+                            }" class="main_tag">
+                                    {{ item.tag }}
+                              </a>
+
+                              <!-- Subtags -->
+                              <ul *ngIf="item.subTagData?.length > 0" class="parent_tag mt-2">
+                                    <li *ngFor="let subTag of item.subTagData">
+                                          <a routerLink="/sub-album" [queryParams]="{ tag_id: item.id }"
+                                                class="main_tag">
+                                                {{ subTag.sub_tagName }}
+                                          </a>
+                                    </li>
+                              </ul>
+                        </li>
+                  </ng-container>
+            </ul>
       </div>
 </div>

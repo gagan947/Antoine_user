@@ -5,3 +5,33 @@
 .accordion.no-subcategory .accordion-button::after {
       display: none;
 }
+
+.parent_tag {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0 20px;
+}
+
+.main_tag {
+      color: #fff;
+      border: 1px solid #0dcaf0;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: smaller;
+}
+
+.main_tag.hasSubTag {
+      display: block;
+      text-align: center;
+      font-size: small;
+}
+
+
+.full_width {
+      width: 100%;
+}
+
+.main_tag:hover {
+      background: #0dcaf0;
+}
