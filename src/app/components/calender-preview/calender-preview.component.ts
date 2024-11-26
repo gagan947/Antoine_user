@@ -40,7 +40,6 @@ export class CalenderPreviewComponent {
     this.loading = true
     let apiUrl = `image/getimage-yearandmonth`
     let formData = new URLSearchParams()
-
     formData.set('year', this.year)
     formData.set('month', this.month)
 

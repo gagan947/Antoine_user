@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { SharedService } from '../../services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NoWhitespaceDirective } from '../../shared/validators';
 
 @Component({
   selector: 'app-add-my-album',
@@ -18,6 +19,7 @@ export class AddMyAlbumComponent {
   ImgData: any;
   uploadedImage: any;
   loading: boolean = false;
+  isSubmitted: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -30,6 +32,7 @@ export class AddMyAlbumComponent {
       name: [''],
       category: [''],
       tags: [''],
+      title: ['', [Validators.required, NoWhitespaceDirective.validate]],
     })
 
     this.route.queryParams.subscribe((params) => {
@@ -57,7 +60,8 @@ export class AddMyAlbumComponent {
 
   onSubmit(form: any) {
     form.markAllAsTouched()
-    if (form.invalid) {
+    if (form.invalid || this.selectedCatItems.length == 0 || this.selectedItems.length == 0) {
+      this.isSubmitted = true;
       return
     }
     this.loading = true
@@ -89,13 +93,15 @@ export class AddMyAlbumComponent {
       formData.append('category', JSON.stringify(categories))
       formData.append('file', this.uploadImg)
       formData.append('id', this.paramId)
+      formData.append('title', form.value.title)
       formData.append('tags', JSON.stringify(tags))
     } else {
       apiUrl = `image/create`
       formData.append('category', JSON.stringify(categories))
       formData.append('file', this.uploadImg)
+      formData.append('title', form.value.title)
       formData.append('tags', JSON.stringify(tags))
-      formData.append('collaburate_status', '2')
+      formData.append('collaburate_status', '0')
     }
 
     this.service.upload(apiUrl, formData).subscribe(res => {
@@ -207,10 +213,10 @@ export class AddMyAlbumComponent {
             if (existingTag) {
               // Add the subTags to the existing entry
               tagItem.subTags.forEach(subTagItem => {
-                if (!existingTag.subtag_id.includes(subTagItem.subTagId)) {
+                if (!existingTag.subtag_id?.includes(subTagItem.subTagId)) {
                   existingTag.subtag_id.push(subTagItem.subTagId);
                 }
-                if (!existingTag.subTagName.includes(subTagItem.subTagName)) {
+                if (!existingTag.subTagName?.includes(subTagItem.subTagName)) {
                   existingTag.subTagName.push(subTagItem.subTagName);
                 }
               });
@@ -270,10 +276,12 @@ export class AddMyAlbumComponent {
 
   toggleDropdown(open: boolean) {
     this.dropdownOpen = open;
+    this.isSubmitted = true;
   }
 
   toggleCatDropdown(open: boolean) {
     this.dropdownOpenCat = open;
+    this.isSubmitted = true;
   }
   closeAll() {
     this.dropdownOpenCat = this.dropdownOpen = false
@@ -345,7 +353,7 @@ export class AddMyAlbumComponent {
         });
       } else {
         // If the tag is already in selectedItems, add the subTag ID and name to the subtag arrays
-        if (!existingTag.subtag_id.includes(subTag.subTagId)) {
+        if (!existingTag.subtag_id?.includes(subTag.subTagId)) {
           existingTag.subtag_id.push(subTag.subTagId);
           existingTag.subTagName.push(subTag.sub_tagName);
         }
@@ -432,14 +440,24 @@ export class AddMyAlbumComponent {
     if (subcategory.selected) {
       category.selected = true;
 
-      this.selectedCatItems.push(
-        {
+      const existingIndex = this.selectedCatItems.findIndex(
+        (item) => item.categoryId === category.id
+      );
+
+      if (existingIndex !== -1) {
+        this.selectedCatItems[existingIndex] = {
+          ...this.selectedCatItems[existingIndex],
+          subcategoryId: subcategory.id,
+          subcategoryName: subcategory.subcategory_name,
+        };
+      } else {
+        this.selectedCatItems.push({
           categoryId: category.id,
           subcategoryId: subcategory.id,
           categoryName: category.category_name,
           subcategoryName: subcategory.subcategory_name,
-        },
-      );
+        });
+      }
 
       category.subcategoryData?.forEach((sub: any) => {
         sub.disabled = sub !== subcategory;
@@ -477,16 +495,34 @@ export class AddMyAlbumComponent {
       category.selected = true;
       subcategory.selected = true;
 
-      this.selectedCatItems.push(
-        {
+      const existingIndex = this.selectedCatItems.findIndex(
+        (item) =>
+          item.categoryId === category.id &&
+          item.subcategoryId === subcategory.id
+      );
+
+      if (existingIndex !== -1) {
+        // Update the existing entry
+        this.selectedCatItems[existingIndex] = {
+          ...this.selectedCatItems[existingIndex],
           categoryId: category.id,
           subcategoryId: subcategory.id,
           subSubcategoryId: subsubcategory.id,
           categoryName: category.category_name,
           subcategoryName: subcategory.subcategory_name,
           subSubCategoryName: subsubcategory.sub_sub_categoryName,
-        },
-      );
+        };
+      } else {
+        // Push a new entry if not already present
+        this.selectedCatItems.push({
+          categoryId: category.id,
+          subcategoryId: subcategory.id,
+          subSubcategoryId: subsubcategory.id,
+          categoryName: category.category_name,
+          subcategoryName: subcategory.subcategory_name,
+          subSubCategoryName: subsubcategory.sub_sub_categoryName,
+        });
+      }
 
       category.subcategoryData?.forEach((sub: any) => {
         sub.disabled = sub !== subcategory;

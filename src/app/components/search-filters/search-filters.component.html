@@ -324,7 +324,7 @@
                                                                                                 in
                                                                                                 sub-albums</label>
                                                                                     </li>
-                                                                                    <li>
+                                                                                    <!-- <li>
                                                                                           <input type="checkbox"
                                                                                                 id="sub-subalbums"
                                                                                                 [(ngModel)]="isInsubSubAlbumSearch"
@@ -332,7 +332,7 @@
                                                                                           <label for="sub-subalbums">Search
                                                                                                 in
                                                                                                 sub-Subalbums</label>
-                                                                                    </li>
+                                                                                    </li> -->
                                                                               </ul>
                                                                         </div>
                                                                         <button
@@ -508,7 +508,8 @@
                                                       <a (click)="openDialog(item?.id)"
                                                             class="ct_album_img ct_light_box_width_348">
                                                             <img [src]="item.image" alt="">
-                                                            <p>{{item.image_name}}</p>
+                                                            <p>{{item.title}}, {{item.year
+                                                                  }}</p>
                                                       </a>
                                                 </div>
                                                 }

@@ -113,7 +113,7 @@ export class SearchFiltersComponent {
 
     const tagObj = {
       "tag_search": tags.tag_id,
-      "sub_tag": tags.subtag_id,
+      "subtag_search": tags.subtag_id,
       "all_tag": this.tagSearchMode === 'AND' ? true : false,
       "any_tag": this.tagSearchMode === 'OR' ? true : false,
     }
@@ -138,9 +138,6 @@ export class SearchFiltersComponent {
     formData.set("album", JSON.stringify(albumObj))
     formData.set("tag", JSON.stringify(tagObj))
     formData.set("search_words", JSON.stringify(searchWordObj))
-    if (this.isInsubSubAlbumSearch) {
-      formData.set('sub_sub_category', this.searchAlbumQuery)
-    }
 
     this.service.post(apiUrl, formData.toString()).subscribe(res => {
       if (res.success) {
@@ -228,7 +225,7 @@ export class SearchFiltersComponent {
         });
       } else {
         // If the tag is already in selectedItems, add the subTag ID and name to the subtag arrays
-        if (!existingTag.subtag_id.includes(subTag.subTagId)) {
+        if (!existingTag.subtag_id?.includes(subTag.subTagId)) {
           existingTag.subtag_id.push(subTag.subTagId);
           existingTag.subTagName.push(subTag.sub_tagName);
         }
