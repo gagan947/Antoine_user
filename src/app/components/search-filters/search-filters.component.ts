@@ -199,7 +199,7 @@ export class SearchFiltersComponent {
     if (tag.selected) {
       const existingTag = this.selectedItems.find((item) => item.id === tag.id);
       if (!existingTag) {
-        this.selectedItems.push({ id: tag.id, tag: tag.tag, subTagName: null });
+        this.selectedItems.push({ id: tag.id, tag: tag.tag, subTagName: [], subtag_id: [] });
       }
     } else {
       this.selectedItems = this.selectedItems.filter((item) => item.id !== tag.id);

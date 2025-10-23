@@ -90,7 +90,7 @@ export class StudioAlbumComponent {
       ${this.data.image}
      `.trim();
 
-    navigator.clipboard.writeText(dataToCopy).then(() => {
+    navigator?.clipboard?.writeText(dataToCopy).then(() => {
       this.copySuccess = true;
       setTimeout(() => this.copySuccess = false, 2000);
     }).catch(err => {

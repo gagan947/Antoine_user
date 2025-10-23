@@ -39,11 +39,15 @@
                                                       <ng-container *ngFor="let day of week">
                                                             <td [ngClass]="day?.day ? '':'bg-transparent'">
                                                                   <div class="h-100" *ngIf="day?.day">
-                                                                        <div class="bg-img" *ngIf="day.image"
+                                                                        <div class="bg-img position-relative"
+                                                                              style="z-index: 1;" *ngIf="day.image"
                                                                               [style.background-image]="'url(' + day.image + ')'">
-                                                                              <span class="p-2">{{ day.day }}</span>
+                                                                              <span class="p-2">{{ day.day
+                                                                                    }}</span>
+                                                                              <img [src]="day.image"
+                                                                                    class="ct_event_img_calender12">
                                                                         </div>
-                                                                        <div *ngIf="!day.image">
+                                                                        <div *ngIf=" !day.image">
                                                                               <span class="p-2">{{ day.day }}</span>
                                                                         </div>
                                                                   </div>

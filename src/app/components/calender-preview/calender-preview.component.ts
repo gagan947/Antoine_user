@@ -48,7 +48,7 @@ export class CalenderPreviewComponent {
         this.data = res.data
         this.initializeCalendar(this.year, this.month);
       } else {
-        this.loading = false
+
       }
     })
   }
@@ -57,6 +57,7 @@ export class CalenderPreviewComponent {
     let MonthNo: any = this.getMonthNumber(month)
     this.calendarData = this.getWeeks(year, MonthNo);
     this.cdr.detectChanges();
+    this.loading = false
   }
 
   getWeeks(year: number, month: number) {

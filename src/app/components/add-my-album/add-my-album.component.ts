@@ -327,7 +327,7 @@ export class AddMyAlbumComponent {
     if (tag.selected) {
       const existingTag = this.selectedItems.find((item) => item.id === tag.id);
       if (!existingTag) {
-        this.selectedItems.push({ id: tag.id, tag: tag.tag, subTagName: null });
+        this.selectedItems.push({ id: tag.id, tag: tag.tag, subTagName: [], subtag_id: [] });
       }
     } else {
       this.selectedItems = this.selectedItems.filter((item) => item.id !== tag.id);
@@ -339,11 +339,10 @@ export class AddMyAlbumComponent {
 
   onSubTagChange(tag: any, subTag: any, event: any) {
     subTag.selected = event.target.checked;
-    // Find if the tag is already in selectedItems
-    let existingTag = this.selectedItems.find(item => item.id === tag.id);
+
+    const existingTag = this.selectedItems.find(item => item.id === tag.id);
 
     if (subTag.selected) {
-      // If the tag is not in selectedItems, add it
       if (!existingTag) {
         this.selectedItems.push({
           id: tag.id,
@@ -352,14 +351,12 @@ export class AddMyAlbumComponent {
           subTagName: [subTag.sub_tagName]
         });
       } else {
-        // If the tag is already in selectedItems, add the subTag ID and name to the subtag arrays
         if (!existingTag.subtag_id?.includes(subTag.subTagId)) {
           existingTag.subtag_id.push(subTag.subTagId);
           existingTag.subTagName.push(subTag.sub_tagName);
         }
       }
     } else {
-      // If the subTag is deselected, remove the subTag subTagId and name from the arrays
       if (existingTag) {
         const subTagIndex = existingTag.subtag_id.indexOf(subTag.subTagId);
         if (subTagIndex !== -1) {
@@ -367,12 +364,13 @@ export class AddMyAlbumComponent {
           existingTag.subTagName.splice(subTagIndex, 1);
         }
 
-        // If no subTags remain selected for this tag, remove the tag from selectedItems
         if (existingTag.subtag_id.length === 0) {
           this.selectedItems = this.selectedItems.filter(item => item.id !== tag.id);
         }
       }
     }
+
+    // Update the tag's `selected` property based on its subTags
     tag.selected = tag.subTagData.some((sub: any) => sub.selected);
   }
 
@@ -489,16 +487,18 @@ export class AddMyAlbumComponent {
     subsubcategory: any,
     event: any
   ): void {
-    subsubcategory.selected = event.target.checked;
 
+    subsubcategory.selected = event.target.checked;
     if (subsubcategory.selected) {
       category.selected = true;
       subcategory.selected = true;
 
+
       const existingIndex = this.selectedCatItems.findIndex(
         (item) =>
           item.categoryId === category.id &&
-          item.subcategoryId === subcategory.id
+          item.subcategoryId === subcategory.id &&
+          item.subSubcategoryId === subsubcategory.id
       );
 
       if (existingIndex !== -1) {
@@ -513,16 +513,33 @@ export class AddMyAlbumComponent {
           subSubCategoryName: subsubcategory.sub_sub_categoryName,
         };
       } else {
-        // Push a new entry if not already present
-        this.selectedCatItems.push({
-          categoryId: category.id,
-          subcategoryId: subcategory.id,
-          subSubcategoryId: subsubcategory.id,
-          categoryName: category.category_name,
-          subcategoryName: subcategory.subcategory_name,
-          subSubCategoryName: subsubcategory.sub_sub_categoryName,
-        });
+        // Check if there's a category match but no exact subcategory or sub-subcategory match
+        const existingCatIndex = this.selectedCatItems.findIndex(
+          (item) => item.categoryId === category.id
+        );
+
+        if (existingCatIndex !== -1) {
+          // Update the entry to add subcategory and sub-subcategory details
+          this.selectedCatItems[existingCatIndex] = {
+            ...this.selectedCatItems[existingCatIndex],
+            subcategoryId: subcategory.id,
+            subSubcategoryId: subsubcategory.id,
+            subcategoryName: subcategory.subcategory_name,
+            subSubCategoryName: subsubcategory.sub_sub_categoryName,
+          };
+        } else {
+          // Add a new entry
+          this.selectedCatItems.push({
+            categoryId: category.id,
+            subcategoryId: subcategory.id,
+            subSubcategoryId: subsubcategory.id,
+            categoryName: category.category_name,
+            subcategoryName: subcategory.subcategory_name,
+            subSubCategoryName: subsubcategory.sub_sub_categoryName,
+          });
+        }
       }
+
 
       category.subcategoryData?.forEach((sub: any) => {
         sub.disabled = sub !== subcategory;
@@ -558,6 +575,5 @@ export class AddMyAlbumComponent {
         sub.disabled = false;
       });
     }
-    console.log(this.selectedCatItems);
   }
 }

@@ -48,8 +48,6 @@ export class HomeFullViewDetailComponent {
   }
 
   ngOnInit() {
-    console.log(this.dialogData);
-
     this.getAlbum()
   }
 
@@ -82,10 +80,10 @@ export class HomeFullViewDetailComponent {
   copySuccess: boolean = false;
   copyData() {
     const dataToCopy = `
-      ${this.data.image}
+      ${this.data.image_url}
      `.trim();
 
-    navigator.clipboard.writeText(dataToCopy).then(() => {
+    navigator.clipboard?.writeText(dataToCopy).then(() => {
       this.copySuccess = true;
       setTimeout(() => this.copySuccess = false, 2000);
     }).catch(err => {
